@@ -6,14 +6,20 @@ import android.support.v4.view.ViewPager;
 
 import halewang.com.bangbang.presenter.MainPresenter;
 import halewang.com.bangbang.view.MainView;
+import halewang.com.bangbang.widght.MainViewPager;
 
 public class MainActivity extends BaseActivity<MainView,MainPresenter>
         implements MainView{
+
+    private MainViewPager mViewPager;
+    private TabLayout mTabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mViewPager = (MainViewPager) findViewById(R.id.viewpager);
+        mTabLayout = (TabLayout) findViewById(R.id.tablayout);
         mPresenter.onCreate();
     }
 
@@ -23,12 +29,12 @@ public class MainActivity extends BaseActivity<MainView,MainPresenter>
     }
 
     @Override
-    public ViewPager getViewPager() {
-        return (ViewPager) findViewById(R.id.viewpager);
+    public MainViewPager getViewPager() {
+        return mViewPager;
     }
 
     @Override
     public TabLayout getTabLayout() {
-        return (TabLayout) findViewById(R.id.tablayout);
+        return mTabLayout;
     }
 }
