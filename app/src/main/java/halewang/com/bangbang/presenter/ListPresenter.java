@@ -52,7 +52,7 @@ public class ListPresenter extends BasePresenter<FragmentListView>{
 
     private void initViewPager(){
         mViewPager = getMView().getViewPager();
-        mViewPager.setOffscreenPageLimit(4);
+        mViewPager.setOffscreenPageLimit(2);
         mFragments = new ArrayList<>();
         mFragments.add(new DayFragment());
         mFragments.add(new WeekFragment());
