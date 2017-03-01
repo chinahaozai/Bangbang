@@ -1,7 +1,7 @@
 package halewang.com.bangbang.view;
 
 import android.support.design.widget.TabLayout;
-import halewang.com.bangbang.widght.MainViewPager;
+import halewang.com.bangbang.widght.NoScrollViewPager;
 
 /**
  * Created by halewang on 2017/2/22.
@@ -9,6 +9,6 @@ import halewang.com.bangbang.widght.MainViewPager;
 
 public interface MainView extends BaseView{
 
-    MainViewPager getViewPager();
+    NoScrollViewPager getViewPager();
     TabLayout getTabLayout();
 }

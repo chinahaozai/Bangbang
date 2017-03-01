@@ -9,15 +9,15 @@ import android.view.MotionEvent;
  * Created by halewang on 2017/2/23.
  */
 
-public class MainViewPager extends ViewPager{
+public class NoScrollViewPager extends ViewPager{
 
     public boolean isCanScroll=false;
 
-    public MainViewPager(Context context) {
+    public NoScrollViewPager(Context context) {
         super(context);
     }
 
-    public MainViewPager(Context context, AttributeSet attrs) {
+    public NoScrollViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 

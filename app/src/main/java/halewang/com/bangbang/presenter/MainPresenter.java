@@ -15,7 +15,7 @@ import halewang.com.bangbang.fragment.HomeFragment;
 import halewang.com.bangbang.fragment.ListFragment;
 import halewang.com.bangbang.fragment.MineFragment;
 import halewang.com.bangbang.view.MainView;
-import halewang.com.bangbang.widght.MainViewPager;
+import halewang.com.bangbang.widght.NoScrollViewPager;
 
 /**
  * Created by halewang on 2017/2/22.
@@ -25,7 +25,7 @@ public class MainPresenter extends BasePresenter<MainView>{
     private static final String TAG = "MainPresenter";
 
     private Context mContext;
-    private MainViewPager mViewPager;
+    private NoScrollViewPager mViewPager;
     private TabLayout mTabLayout;
     private List<Fragment> mFragments;
     private List<String> mTabs;

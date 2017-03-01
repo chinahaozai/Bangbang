@@ -19,10 +19,10 @@ public class MyPushMessageReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         // TODO Auto-generated method stub
-        if(intent.getAction().equals(PushConstants.ACTION_MESSAGE)){
+        //if(intent.getAction().equals(PushConstants.ACTION_MESSAGE)){
             Log.d(TAG, "客户端收到推送内容："+intent.getStringExtra("msg"));
             Toast.makeText(context,intent.getStringExtra("msg"),Toast.LENGTH_SHORT).show();
-        }
+        //}
     }
 
 }
