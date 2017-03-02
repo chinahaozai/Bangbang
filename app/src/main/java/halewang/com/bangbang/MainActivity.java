@@ -30,8 +30,7 @@ public class MainActivity extends BaseActivity<MainView,MainPresenter>
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // 初始化BmobSDK
-        Bmob.initialize(this, "c791fc72fdee4d5cc79a1160fb675b58");
+
         // 使用推送服务时的初始化操作
         // 启动推送服务
         BmobPush.setDebugMode(true);
