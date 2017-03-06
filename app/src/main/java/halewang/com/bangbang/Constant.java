@@ -6,4 +6,12 @@ package halewang.com.bangbang;
 
 public class Constant {
     public static final String SETTING = "setting";
+    public final static String USER_INFO = "user_info";     //SharePreferences 名字
+
+    public final static String USER = "user";
+    public final static String PHONE = "phone";
+    public final static String AVATAR = "avatar";
+    public final static String OBJECT_ID = "object_id";
+
+    public final static String IS_ONLINE = "is_online";
 }

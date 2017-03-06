@@ -11,7 +11,10 @@ import java.util.HashMap;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 import cn.smssdk.gui.RegisterPage;
+import halewang.com.bangbang.Constant;
 import halewang.com.bangbang.LoginActivity;
+import halewang.com.bangbang.UserInfoActivity;
+import halewang.com.bangbang.utils.PrefUtil;
 import halewang.com.bangbang.view.FragmentMineView;
 
 /**
@@ -42,7 +45,11 @@ public class MinePresenter extends BasePresenter<FragmentMineView>{
         rlUserItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mContext.startActivity(new Intent(mContext, LoginActivity.class));
+                if(PrefUtil.getBoolean(mContext, Constant.IS_ONLINE,false)) {
+                    mContext.startActivity(new Intent(mContext, UserInfoActivity.class));
+                }else {
+                    mContext.startActivity(new Intent(mContext, LoginActivity.class));
+                }
             }
         });
     }

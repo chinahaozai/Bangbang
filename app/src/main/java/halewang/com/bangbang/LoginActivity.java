@@ -7,17 +7,24 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.HashMap;
+import java.util.List;
 
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 import cn.smssdk.gui.RegisterPage;
+import halewang.com.bangbang.model.User;
+import halewang.com.bangbang.utils.MD5Util;
+import halewang.com.bangbang.utils.PrefUtil;
 
 /**
  * 这个类就不用MVP了，突然感觉MVP麻烦了，是我封装的问题吗。。还是有时间了解一下MVVM 吧。
@@ -97,6 +104,13 @@ public class LoginActivity extends AppCompatActivity {
                 register();
             }
         });
+
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                doLogin();
+            }
+        });
     }
 
     private void register() {
@@ -117,6 +131,30 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         registerPage.show(this);
+    }
+
+    private void doLogin() {
+
+        BmobQuery<User> userQuery = new BmobQuery<>();
+        userQuery.addWhereEqualTo("phone", etUser.getText().toString());
+        userQuery.addWhereEqualTo("password", MD5Util.encrypt(etPassword.getText().toString()));
+        userQuery.findObjects(new FindListener<User>() {
+            @Override
+            public void done(List<User> list, BmobException e) {
+                if (list.size() > 0) {
+                    User user = list.get(0);
+                    PrefUtil.putString(LoginActivity.this, Constant.USER, user.getName());
+                    PrefUtil.putString(LoginActivity.this, Constant.PHONE, user.getPhone());
+                    PrefUtil.putString(LoginActivity.this, Constant.AVATAR, user.getAvatar());
+                    PrefUtil.putString(LoginActivity.this, Constant.OBJECT_ID, user.getObjectId());
+                    PrefUtil.putBoolean(LoginActivity.this, Constant.IS_ONLINE, true);
+                    Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+                    finish();
+                } else {
+                    Toast.makeText(LoginActivity.this, "登录失败，用户名或密码错误", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
 }

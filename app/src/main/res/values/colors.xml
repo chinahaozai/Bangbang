@@ -3,4 +3,6 @@
     <color name="colorPrimary">#FF9100</color>
     <color name="colorPrimaryDark">#FF6D00</color>
     <color name="colorAccent">#FF5722</color>
+    <color name="itemNormal">#FFFFFF</color>
+    <color name="itemPressed">#ceececec</color>
 </resources>
