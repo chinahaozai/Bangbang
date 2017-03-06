@@ -17,6 +17,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import java.io.File;
 
 import cn.bmob.v3.datatype.BmobFile;
@@ -45,9 +47,9 @@ public class UserInfoActivity extends AppCompatActivity {
     private static final int AVATAR = 2;
 
     private SelectPicPopupWindow menuWindow;
-    private static final int REQUEST_CODE_PICK = 0;		// 相册选图标记
-    private static final int REQUEST_CODE_TAKE = 1;		// 相机拍照标记
-    private static final int REQUEST_CODE_CUTTING = 2;	// 图片裁切标记
+    private static final int REQUEST_CODE_PICK = 0;        // 相册选图标记
+    private static final int REQUEST_CODE_TAKE = 1;        // 相机拍照标记
+    private static final int REQUEST_CODE_CUTTING = 2;    // 图片裁切标记
     private static final String IMAGE_FILE_NAME = "avatarImage.jpg";// 头像文件名称
     private String urlpath; // 图片本地路径
     private String avatarPath;  //上传后头像地址
@@ -76,23 +78,37 @@ public class UserInfoActivity extends AppCompatActivity {
         });
     }
 
-    private void initView(){
+    private void initView() {
         rootLayout = (LinearLayout) findViewById(R.id.activity_user_info);
         rlHeader = (RelativeLayout) findViewById(R.id.rl_header_item);
-        rlUserName = (RelativeLayout) findViewById(R.id.rl_user_item);
+        rlUserName = (RelativeLayout) findViewById(R.id.rl_name_item);
         rlPassword = (RelativeLayout) findViewById(R.id.rl_password_item);
         tvUserName = (TextView) findViewById(R.id.tv_username);
         ivAvatar = (CircleImageView) findViewById(R.id.iv_avatar);
     }
 
-    private void initData(){
+    private void initData() {
         menuWindow = new SelectPicPopupWindow(this, itemsOnClick);
 
         rlHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 menuWindow.showAtLocation(rootLayout,
-                        Gravity.BOTTOM| Gravity.CENTER_HORIZONTAL, 0, 0);
+                        Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+            }
+        });
+
+        rlUserName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        rlPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
     }
@@ -100,7 +116,16 @@ public class UserInfoActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (PrefUtil.getBoolean(this, Constant.IS_ONLINE, false)) {
+            if (!TextUtils.isEmpty(PrefUtil.getString(this, Constant.AVATAR, ""))) {
+                Glide.with(this)
+                        .load(PrefUtil.getString(this, Constant.AVATAR, ""))
+                        .into(ivAvatar);
+            }
+        }
 
+        tvUserName.setText(!PrefUtil.getString(this, Constant.USER_INFO, "").equals("")
+                ? PrefUtil.getString(this, Constant.USER_INFO, "") : "");
     }
 
     //为弹出窗口实现监听类
@@ -163,6 +188,7 @@ public class UserInfoActivity extends AppCompatActivity {
 
     /**
      * 裁剪图片方法实现
+     *
      * @param uri
      */
     public void startPhotoZoom(Uri uri) {
@@ -182,6 +208,7 @@ public class UserInfoActivity extends AppCompatActivity {
 
     /**
      * 保存裁剪之后的图片数据
+     *
      * @param picdata
      */
     private void setPicToView(Intent picdata) {
@@ -196,12 +223,12 @@ public class UserInfoActivity extends AppCompatActivity {
 
                 @Override
                 public void done(BmobException e) {
-                    if(e==null){
-                        Toast.makeText(UserInfoActivity.this,"上传成功",Toast.LENGTH_SHORT).show();
+                    if (e == null) {
+                        Toast.makeText(UserInfoActivity.this, "上传成功", Toast.LENGTH_SHORT).show();
                         avatarPath = bmobFile.getFileUrl();
-                        commitUserInfo(AVATAR,avatarPath);
-                    }else{
-                        Toast.makeText(UserInfoActivity.this,"上传失败",Toast.LENGTH_SHORT).show();
+                        commitUserInfo(AVATAR, avatarPath);
+                    } else {
+                        Toast.makeText(UserInfoActivity.this, "上传失败", Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -213,14 +240,15 @@ public class UserInfoActivity extends AppCompatActivity {
             });
         }
     }
-    private void commitUserInfo(final int key, final String value){
+
+    private void commitUserInfo(final int key, final String value) {
         final User user = new User();
-        switch (key){
+        switch (key) {
             case USERNAME:
-                if(!TextUtils.isEmpty(value)){
+                if (!TextUtils.isEmpty(value)) {
                     user.setName(value);
-                }else{
-                    Toast.makeText(this,"用户名不能为空",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "用户名不能为空", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 break;
@@ -239,6 +267,7 @@ public class UserInfoActivity extends AppCompatActivity {
                 break;*/
             case AVATAR:
                 user.setAvatar(value);
+                PrefUtil.putString(this,Constant.AVATAR,value);
                 break;
             default:
                 break;
@@ -248,13 +277,13 @@ public class UserInfoActivity extends AppCompatActivity {
             public void done(BmobException e) {
                 if (e == null) {
                     Toast.makeText(UserInfoActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
-                    switch (key){
+                    switch (key) {
                         case USERNAME:
-                            PrefUtil.putString(UserInfoActivity.this, Constant.USER,value);
+                            PrefUtil.putString(UserInfoActivity.this, Constant.USER, value);
                             break;
 
                         case AVATAR:
-                            PrefUtil.putString(UserInfoActivity.this, Constant.AVATAR,value);
+                            PrefUtil.putString(UserInfoActivity.this, Constant.AVATAR, value);
                             break;
                         default:
                             break;
