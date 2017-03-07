@@ -1,9 +1,12 @@
 package halewang.com.bangbang;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +15,9 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -20,14 +26,18 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 
 import java.io.File;
+import java.util.List;
 
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
 import de.hdodenhof.circleimageview.CircleImageView;
 import halewang.com.bangbang.model.User;
 import halewang.com.bangbang.utils.FileUtil;
+import halewang.com.bangbang.utils.MD5Util;
 import halewang.com.bangbang.utils.PatternUtil;
 import halewang.com.bangbang.utils.PrefUtil;
 import halewang.com.bangbang.widght.SelectPicPopupWindow;
@@ -53,8 +63,18 @@ public class UserInfoActivity extends AppCompatActivity {
     private static final String IMAGE_FILE_NAME = "avatarImage.jpg";// 头像文件名称
     private String urlpath; // 图片本地路径
     private String avatarPath;  //上传后头像地址
+    private float alpha = 1f;
 
-
+    Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case 1:
+                    backgroundAlpha((float)msg.obj);
+                    break;
+            }
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +113,26 @@ public class UserInfoActivity extends AppCompatActivity {
         rlHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                new Thread(new Runnable(){
+                    @Override
+                    public void run() {
+                        while(alpha>0.35f){
+                            try {
+                                //4是根据弹出动画时间和减少的透明度计算
+                                Thread.sleep(5);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            Message msg =mHandler.obtainMessage();
+                            msg.what = 1;
+                            //每次减少0.01，精度越高，变暗的效果越流畅
+                            alpha-=0.01f;
+                            msg.obj =alpha ;
+                            mHandler.sendMessage(msg);
+                        }
+                    }
+
+                }).start();
                 menuWindow.showAtLocation(rootLayout,
                         Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
             }
@@ -101,14 +141,14 @@ public class UserInfoActivity extends AppCompatActivity {
         rlUserName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                showChangeName();
             }
         });
 
         rlPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                showChangePassword();
             }
         });
     }
@@ -124,8 +164,8 @@ public class UserInfoActivity extends AppCompatActivity {
             }
         }
 
-        tvUserName.setText(!PrefUtil.getString(this, Constant.USER_INFO, "").equals("")
-                ? PrefUtil.getString(this, Constant.USER_INFO, "") : "");
+        tvUserName.setText(!PrefUtil.getString(this, Constant.USER, "").equals("")
+                ? PrefUtil.getString(this, Constant.USER, "") : "");
     }
 
     //为弹出窗口实现监听类
@@ -252,19 +292,15 @@ public class UserInfoActivity extends AppCompatActivity {
                     return;
                 }
                 break;
-            /*case PASSWORD:
+            case PASSWORD:
                 if(!TextUtils.isEmpty(value)) {
-                    if (PatternUtil.matchPassword(etPassword.getText().toString())) {
-                        user.setPassword(value);
-                    }else{
-                        Toast.makeText(this,"请使用6-16位且不包含特殊字符的密码",Toast.LENGTH_SHORT).show();
-                        return;
-                    }
+                    user.setPassword(value);
+
                 }else{
                     Toast.makeText(this,"密码不能为空",Toast.LENGTH_SHORT).show();
                     return;
                 }
-                break;*/
+                break;
             case AVATAR:
                 user.setAvatar(value);
                 PrefUtil.putString(this,Constant.AVATAR,value);
@@ -296,4 +332,104 @@ public class UserInfoActivity extends AppCompatActivity {
 
 
     }
+
+    public void backgroundAlpha(float bgAlpha){
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.alpha = bgAlpha; //0.0-1.0
+        getWindow().setAttributes(lp);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+    }
+
+    //Popupwindow退出时，背景渐变回去
+    public void onDismiss() {
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                //此处while的条件alpha不能<= 否则会出现黑屏
+                while(alpha<1f){
+                    try {
+                        Thread.sleep(2);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d("HeadPortrait","alpha:"+alpha);
+                    Message msg =mHandler.obtainMessage();
+                    msg.what = 1;
+                    alpha+=0.01f;
+                    msg.obj =alpha ;
+                    mHandler.sendMessage(msg);
+                }
+            }
+
+        }).start();
+    }
+
+    private void showChangeName(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final AlertDialog dialog = builder.create();
+        View view = View.inflate(UserInfoActivity.this,R.layout.dialog_change_name,null);
+        Button btnConfirm = (Button) view.findViewById(R.id.btn_dialog_confirm);
+        final EditText etName = (EditText) view.findViewById(R.id.et_dialog_name);
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!TextUtils.isEmpty(etName.getText().toString())){
+                    commitUserInfo(USERNAME,etName.getText().toString());
+                    dialog.dismiss();
+                }else{
+                    Toast.makeText(UserInfoActivity.this,"昵称不能为空",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        dialog.setView(view);
+        dialog.show();
+    }
+
+    private void showChangePassword(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final AlertDialog dialog = builder.create();
+        View view = View.inflate(UserInfoActivity.this,R.layout.dialog_change_password,null);
+        Button btnConfirm = (Button) view.findViewById(R.id.btn_dialog_confirm);
+        final EditText etPassword = (EditText) view.findViewById(R.id.et_dialog_password);
+        final EditText etPasswordNew = (EditText) view.findViewById(R.id.et_dialog_new_password);
+        final EditText etPasswordNewConfirm = (EditText) view.findViewById(R.id.et_dialog_new_password_confirm);
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String password = etPassword.getText().toString();
+                String passwordNew = etPasswordNew.getText().toString();
+                String passwordNewConfirm = etPasswordNewConfirm.getText().toString();
+                if(!TextUtils.isEmpty(password)&&!TextUtils.isEmpty(passwordNew)&&
+                        !TextUtils.isEmpty(passwordNewConfirm)){
+                    if(!passwordNew.equals(passwordNewConfirm)){
+                        Toast.makeText(UserInfoActivity.this,"新密码不一致",Toast.LENGTH_SHORT).show();
+                    }else{
+                        checkPassword(password, passwordNew, dialog);
+                    }
+                }else{
+                    Toast.makeText(UserInfoActivity.this,"密码不能为空",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        dialog.setView(view);
+        dialog.show();
+    }
+
+    private void checkPassword(final String password, final String newPassword, final AlertDialog dialog){
+        BmobQuery<User> userQuery = new BmobQuery<>();
+        userQuery.addWhereEqualTo("phone", PrefUtil.getString(UserInfoActivity.this,Constant.PHONE,""));
+        userQuery.addWhereEqualTo("password", MD5Util.encrypt(password));
+        userQuery.findObjects(new FindListener<User>() {
+            @Override
+            public void done(List<User> list, BmobException e) {
+                if (list.size() > 0) {
+                    commitUserInfo(PASSWORD,MD5Util.encrypt(newPassword));
+                    dialog.dismiss();
+                } else {
+                    Toast.makeText(UserInfoActivity.this, "密码错误,请重试", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
 }

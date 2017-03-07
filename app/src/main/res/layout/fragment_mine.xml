@@ -17,23 +17,38 @@
             android:background="@drawable/user_center_top_bg"
             android:paddingTop="30dp"
             android:paddingBottom="30dp"
-            android:paddingLeft="20dp"
+            android:paddingLeft="12dp"
             android:paddingRight="15dp">
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/iv_avatar"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="110dp"
+                android:layout_height="110dp"
                 android:src="@drawable/user_center_default_face"
                 android:layout_centerVertical="true"/>
-            <TextView
-                android:id="@+id/tv_user"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#fff"
-                android:text="请先注册/登录"
-                android:textSize="17sp"
-                android:textStyle="bold"
-                android:layout_centerInParent="true"/>
+                android:layout_marginLeft="8dp"
+                android:layout_toRightOf="@+id/iv_avatar"
+                android:orientation="vertical"
+                android:layout_centerVertical="true">
+                <TextView
+                    android:id="@+id/tv_user"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#fff"
+                    android:text="请先注册/登录"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    />
+                <TextView
+                    android:id="@+id/tv_phone_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textColor="#f5dd99"/>
+            </LinearLayout>
+
             <ImageView
                 android:layout_width="18dp"
                 android:layout_height="25dp"

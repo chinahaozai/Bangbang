@@ -28,6 +28,7 @@ public class MineFragment extends BaseFragment<FragmentMineView,MinePresenter> i
     private View mView;
     private CircleImageView ivAvatar;
     private TextView tvUser;
+    private TextView tvPhoneNum;
 
     @Override
     public MinePresenter initPresenter() {
@@ -40,6 +41,7 @@ public class MineFragment extends BaseFragment<FragmentMineView,MinePresenter> i
         mView = inflater.inflate(R.layout.fragment_mine,container,false);
         ivAvatar = (CircleImageView) mView.findViewById(R.id.iv_avatar);
         tvUser = (TextView) mView.findViewById(R.id.tv_user);
+        tvPhoneNum = (TextView) mView.findViewById(R.id.tv_phone_num);
         return mView;
     }
 
@@ -69,8 +71,13 @@ public class MineFragment extends BaseFragment<FragmentMineView,MinePresenter> i
             }
         }
 
-        tvUser.setText(!PrefUtil.getString(getActivity(),Constant.USER_INFO,"").equals("")
-                ?PrefUtil.getString(getActivity(),Constant.USER_INFO,"")
+        tvUser.setText(!PrefUtil.getString(getActivity(),Constant.USER,"").equals("")
+                ?PrefUtil.getString(getActivity(),Constant.USER,"")
                 :PrefUtil.getString(getActivity(),Constant.PHONE,""));
+
+        String string = PrefUtil.getString(getActivity(),Constant.PHONE,"");
+        String temp = string.substring(3,7);
+
+        tvPhoneNum.setText(string.replace(temp,"****"));
     }
 }

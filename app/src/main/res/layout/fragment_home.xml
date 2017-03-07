@@ -4,10 +4,15 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <TextView
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="首页"
-        android:textSize="40sp"/>
+        android:text="发需求"
+        android:id="@+id/btn_send"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="找需求"
+        android:id="@+id/btn_find"/>
 
 </LinearLayout>

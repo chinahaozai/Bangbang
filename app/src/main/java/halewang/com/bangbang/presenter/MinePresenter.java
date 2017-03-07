@@ -52,6 +52,7 @@ public class MinePresenter extends BasePresenter<FragmentMineView>{
                 }
             }
         });
+
     }
 
 }
