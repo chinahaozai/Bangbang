@@ -24,7 +24,7 @@ import halewang.com.bangbang.view.FragmentMineView;
  * Created by halewang on 2017/2/23.
  */
 
-public class MineFragment extends BaseFragment<FragmentMineView,MinePresenter> implements FragmentMineView {
+public class MineFragment extends BaseFragment<FragmentMineView, MinePresenter> implements FragmentMineView {
     private View mView;
     private CircleImageView ivAvatar;
     private TextView tvUser;
@@ -38,7 +38,7 @@ public class MineFragment extends BaseFragment<FragmentMineView,MinePresenter> i
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.fragment_mine,container,false);
+        mView = inflater.inflate(R.layout.fragment_mine, container, false);
         ivAvatar = (CircleImageView) mView.findViewById(R.id.iv_avatar);
         tvUser = (TextView) mView.findViewById(R.id.tv_user);
         tvPhoneNum = (TextView) mView.findViewById(R.id.tv_phone_num);
@@ -63,21 +63,24 @@ public class MineFragment extends BaseFragment<FragmentMineView,MinePresenter> i
     @Override
     public void onResume() {
         super.onResume();
-        if(PrefUtil.getBoolean(getActivity(), Constant.IS_ONLINE,false)){
-            if(!TextUtils.isEmpty(PrefUtil.getString(getActivity(),Constant.AVATAR,""))){
+        if (PrefUtil.getBoolean(getActivity(), Constant.IS_ONLINE, false)) {
+            if (!TextUtils.isEmpty(PrefUtil.getString(getActivity(), Constant.AVATAR, ""))) {
                 Glide.with(this)
-                        .load(PrefUtil.getString(getActivity(),Constant.AVATAR,""))
+                        .load(PrefUtil.getString(getActivity(), Constant.AVATAR, ""))
                         .into(ivAvatar);
             }
         }
 
-        tvUser.setText(!PrefUtil.getString(getActivity(),Constant.USER,"").equals("")
-                ?PrefUtil.getString(getActivity(),Constant.USER,"")
-                :PrefUtil.getString(getActivity(),Constant.PHONE,""));
+        if (PrefUtil.getBoolean(getActivity(), Constant.IS_ONLINE, false)) {
 
-        String string = PrefUtil.getString(getActivity(),Constant.PHONE,"");
-        String temp = string.substring(3,7);
+            tvUser.setText(!PrefUtil.getString(getActivity(), Constant.USER, "").equals("")
+                    ? PrefUtil.getString(getActivity(), Constant.USER, "")
+                    : PrefUtil.getString(getActivity(), Constant.PHONE, ""));
 
-        tvPhoneNum.setText(string.replace(temp,"****"));
+            String string = PrefUtil.getString(getActivity(), Constant.PHONE, "");
+            String temp = string.substring(3, 7);
+
+            tvPhoneNum.setText(string.replace(temp, "****"));
+        }
     }
 }

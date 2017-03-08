@@ -64,6 +64,7 @@ public class UserInfoActivity extends AppCompatActivity {
     private String urlpath; // 图片本地路径
     private String avatarPath;  //上传后头像地址
     private float alpha = 1f;
+    private final float alphaSet = 0.4f;
 
     Handler mHandler = new Handler(){
         @Override
@@ -116,7 +117,7 @@ public class UserInfoActivity extends AppCompatActivity {
                 new Thread(new Runnable(){
                     @Override
                     public void run() {
-                        while(alpha>0.35f){
+                        while(alpha > alphaSet){
                             try {
                                 //4是根据弹出动画时间和减少的透明度计算
                                 Thread.sleep(5);
