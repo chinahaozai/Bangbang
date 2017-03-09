@@ -20,6 +20,7 @@ import com.amap.api.location.AMapLocationListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 
 import cn.bmob.v3.BmobInstallation;
 import cn.bmob.v3.exception.BmobException;
@@ -39,8 +40,6 @@ public class PostRequirementActivity extends AppCompatActivity {
     private EditText etContent;
     private RelativeLayout waitLayout;
     private AMapLocationClient mLocationClient;
-    //声明定位回调监听器
-    private AMapLocationListener mLocationListener;
     //声明AMapLocationClientOption对象
     public AMapLocationClientOption mLocationOption = null;
 

@@ -19,13 +19,13 @@
     <uses-permission android:name="android.permission.GET_TASKS"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
-    <!--用于进行网络定位-->
+    <!-- 用于进行网络定位 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <!--这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位-->
+    <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
-    <!--用于申请调用A-GPS模块-->
+    <!-- 用于申请调用A-GPS模块 -->
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
-    <!--用于申请获取蓝牙信息进行室内定位-->
+    <!-- 用于申请获取蓝牙信息进行室内定位 -->
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
 
@@ -36,9 +36,11 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <meta-data android:name="com.amap.api.v2.apikey"
-                   android:value="f492b2f996b15bf2b323273a08d35fb0">
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="f492b2f996b15bf2b323273a08d35fb0">
         </meta-data>
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -109,8 +111,11 @@
         <activity android:name=".PostRequirementActivity">
         </activity>
 
-        <!--高德地图定位服务-->
-        <service android:name="com.amap.api.location.APSService"></service>
+        <!-- 高德地图定位服务 -->
+        <service android:name="com.amap.api.location.APSService"/>
+
+        <activity android:name=".WatchRequirementActivity">
+        </activity>
     </application>
 
 </manifest>

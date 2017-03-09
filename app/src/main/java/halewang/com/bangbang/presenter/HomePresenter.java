@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 
 import halewang.com.bangbang.PostRequirementActivity;
+import halewang.com.bangbang.WatchRequirementActivity;
 import halewang.com.bangbang.view.FragmentHomeView;
 
 /**
@@ -37,6 +38,12 @@ public class HomePresenter extends BasePresenter<FragmentHomeView>{
             @Override
             public void onClick(View v) {
                 mContext.startActivity(new Intent(mContext, PostRequirementActivity.class));
+            }
+        });
+        btnFind.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mContext.startActivity(new Intent(mContext, WatchRequirementActivity.class));
             }
         });
     }
