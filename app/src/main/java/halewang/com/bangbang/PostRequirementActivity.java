@@ -138,7 +138,8 @@ public class PostRequirementActivity extends AppCompatActivity {
         Requirement requirement = new Requirement();
         requirement.setSite(location);
         requirement.setTitle(title);
-        requirement.setMoney(money);
+        //requirement.setMoney(money);
+        requirement.setMoney(Integer.valueOf(money));
         requirement.setContent(content);
         requirement.setTime(getCurrentTime());
         requirement.setWatchCount(1);

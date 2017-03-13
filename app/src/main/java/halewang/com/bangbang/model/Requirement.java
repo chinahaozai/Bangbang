@@ -12,8 +12,8 @@ public class Requirement extends BmobObject {
     private String title;           //需求标题
     private String content;         //需求内容
     private String time;            //发起时间
-    private String money;           //预算
-    private int watchCount;      //查看人数
+    private int money;              //预算
+    private int watchCount;         //查看人数
     private String status;          //任务状态
     private String site;            //位置信息
     private String receiverPhone;   //接收人手机号
@@ -51,11 +51,11 @@ public class Requirement extends BmobObject {
         this.time = time;
     }
 
-    public String getMoney() {
+    public int getMoney() {
         return money;
     }
 
-    public void setMoney(String money) {
+    public void setMoney(int money) {
         this.money = money;
     }
 

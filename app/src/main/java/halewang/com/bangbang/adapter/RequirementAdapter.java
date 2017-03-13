@@ -21,7 +21,7 @@ public class RequirementAdapter extends BaseQuickAdapter<Requirement, BaseViewHo
     protected void convert(BaseViewHolder helper, Requirement item) {
         helper.setText(R.id.tv_title,item.getTitle())
                 .setText(R.id.tv_content,item.getContent())
-                .setText(R.id.tv_money,item.getMoney())
+                .setText(R.id.tv_money,item.getMoney()+"¥")
                 .setText(R.id.tv_time,item.getTime())
                 .setText(R.id.tv_watch_count,String.valueOf(item.getWatchCount()));
     }

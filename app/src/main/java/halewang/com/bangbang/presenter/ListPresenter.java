@@ -9,12 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import halewang.com.bangbang.MainActivity;
-import halewang.com.bangbang.R;
 import halewang.com.bangbang.adapter.ListPagerAdapter;
 import halewang.com.bangbang.fragment.DayFragment;
 import halewang.com.bangbang.fragment.MonthFragment;
-import halewang.com.bangbang.fragment.WeekFragment;
-import halewang.com.bangbang.view.FragmentHomeView;
+import halewang.com.bangbang.fragment.MoneyFragment;
 import halewang.com.bangbang.view.FragmentListView;
 
 /**
@@ -55,7 +53,7 @@ public class ListPresenter extends BasePresenter<FragmentListView>{
         mViewPager.setOffscreenPageLimit(2);
         mFragments = new ArrayList<>();
         mFragments.add(new DayFragment());
-        mFragments.add(new WeekFragment());
+        mFragments.add(new MoneyFragment());
         mFragments.add(new MonthFragment());
 
         MainActivity activity = (MainActivity) mContext;

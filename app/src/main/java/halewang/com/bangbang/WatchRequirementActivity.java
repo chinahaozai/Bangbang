@@ -1,5 +1,6 @@
 package halewang.com.bangbang;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
@@ -42,6 +43,12 @@ public class WatchRequirementActivity extends BaseActivity<WatchRequirementView,
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+        llSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(WatchRequirementActivity.this,SearchActivity.class));
             }
         });
     }
