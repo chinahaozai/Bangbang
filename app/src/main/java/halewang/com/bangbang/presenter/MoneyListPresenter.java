@@ -55,7 +55,7 @@ public class MoneyListPresenter extends BasePresenter<MoneyListView>{
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         BmobQuery<Requirement> query = new BmobQuery<>();
-        query.setLimit(LIMIT).order("-watchCount").addWhereEqualTo("receiverPhone","");
+        query.setLimit(LIMIT).order("-money").addWhereEqualTo("receiverPhone","");
         start += LIMIT;
         query.findObjects(new FindListener<Requirement>() {
             @Override
@@ -82,7 +82,7 @@ public class MoneyListPresenter extends BasePresenter<MoneyListView>{
         BmobQuery<Requirement> query = new BmobQuery<>();
         query.setLimit(LIMIT)
                 .setSkip(start)
-                .order("-watchCount")
+                .order("-money")
                 .addWhereEqualTo("receiverPhone","")
                 .findObjects(new FindListener<Requirement>() {
                     @Override
@@ -110,7 +110,7 @@ public class MoneyListPresenter extends BasePresenter<MoneyListView>{
             public void onRefresh() {
                 mAdapter.loadMoreComplete();
                 BmobQuery<Requirement> query = new BmobQuery<>();
-                query.setLimit(LIMIT).order("-watchCount").addWhereEqualTo("receiverPhone","");
+                query.setLimit(LIMIT).order("-money").addWhereEqualTo("receiverPhone","");
                 start = LIMIT;
                 query.findObjects(new FindListener<Requirement>() {
                     @Override

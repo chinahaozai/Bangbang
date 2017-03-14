@@ -10,8 +10,8 @@ import java.util.List;
 
 import halewang.com.bangbang.MainActivity;
 import halewang.com.bangbang.adapter.ListPagerAdapter;
-import halewang.com.bangbang.fragment.DayFragment;
-import halewang.com.bangbang.fragment.MonthFragment;
+import halewang.com.bangbang.fragment.RecommendFragment;
+import halewang.com.bangbang.fragment.HotFragment;
 import halewang.com.bangbang.fragment.MoneyFragment;
 import halewang.com.bangbang.view.FragmentListView;
 
@@ -52,9 +52,9 @@ public class ListPresenter extends BasePresenter<FragmentListView>{
         mViewPager = getMView().getViewPager();
         mViewPager.setOffscreenPageLimit(2);
         mFragments = new ArrayList<>();
-        mFragments.add(new DayFragment());
+        mFragments.add(new RecommendFragment());
         mFragments.add(new MoneyFragment());
-        mFragments.add(new MonthFragment());
+        mFragments.add(new HotFragment());
 
         MainActivity activity = (MainActivity) mContext;
         ListPagerAdapter mAdapter = new ListPagerAdapter(activity.getSupportFragmentManager(), mFragments, mItems);

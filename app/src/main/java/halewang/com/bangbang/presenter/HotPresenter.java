@@ -17,15 +17,16 @@ import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 import halewang.com.bangbang.adapter.RequirementAdapter;
 import halewang.com.bangbang.model.Requirement;
-import halewang.com.bangbang.view.WatchRequirementView;
+import halewang.com.bangbang.view.HotView;
+import halewang.com.bangbang.view.MoneyListView;
 
 /**
- * Created by halewang on 2017/3/9.
+ * Created by halewang on 2017/3/13.
  */
 
-public class WatchRequirementPresenter extends BasePresenter<WatchRequirementView> {
+public class HotPresenter extends BasePresenter<HotView>{
 
-    private static final String TAG = "WatchRequirementPresent";
+    private static final String TAG = "MoneyListPresenter";
 
     private Context mContext;
     private SwipeRefreshLayout mRefreshLayout;
@@ -34,7 +35,7 @@ public class WatchRequirementPresenter extends BasePresenter<WatchRequirementVie
     private int start = 0;
     private final int LIMIT = 20;
 
-    public WatchRequirementPresenter(Context mContext) {
+    public HotPresenter(Context mContext){
         this.mContext = mContext;
     }
 
@@ -46,8 +47,8 @@ public class WatchRequirementPresenter extends BasePresenter<WatchRequirementVie
         initRefresh();
     }
 
-    private void initView() {
-        mRefreshLayout = getMView().getRefreshLayout();
+    private void initView(){
+        mRefreshLayout = getMView().getSwipeRefreshLayout();
         mRecyclerView = getMView().getRecyclerView();
     }
 
@@ -55,7 +56,7 @@ public class WatchRequirementPresenter extends BasePresenter<WatchRequirementVie
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         BmobQuery<Requirement> query = new BmobQuery<>();
-        query.setLimit(LIMIT).order("updatedAt").addWhereEqualTo("receiverPhone","");
+        query.setLimit(LIMIT).order("-watchCount").addWhereEqualTo("receiverPhone","");
         start += LIMIT;
         query.findObjects(new FindListener<Requirement>() {
             @Override
@@ -82,7 +83,7 @@ public class WatchRequirementPresenter extends BasePresenter<WatchRequirementVie
         BmobQuery<Requirement> query = new BmobQuery<>();
         query.setLimit(LIMIT)
                 .setSkip(start)
-                .order("updatedAt")
+                .order("-watchCount")
                 .addWhereEqualTo("receiverPhone","")
                 .findObjects(new FindListener<Requirement>() {
                     @Override
@@ -110,7 +111,7 @@ public class WatchRequirementPresenter extends BasePresenter<WatchRequirementVie
             public void onRefresh() {
                 mAdapter.loadMoreComplete();
                 BmobQuery<Requirement> query = new BmobQuery<>();
-                query.setLimit(LIMIT).order("updatedAt").addWhereEqualTo("receiverPhone","");
+                query.setLimit(LIMIT).order("-watchCount").addWhereEqualTo("receiverPhone","");
                 start = LIMIT;
                 query.findObjects(new FindListener<Requirement>() {
                     @Override
