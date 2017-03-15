@@ -14,4 +14,6 @@ public class Constant {
     public final static String OBJECT_ID = "object_id";
 
     public final static String IS_ONLINE = "is_online";
+    public final static String FIRST_IN = "first_in";
+    public final static String LOCATION = "location";
 }

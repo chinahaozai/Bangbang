@@ -4,6 +4,7 @@ import android.app.Application;
 
 import cn.bmob.v3.Bmob;
 import cn.smssdk.SMSSDK;
+import halewang.com.bangbang.utils.PrefUtil;
 
 /**
  * Created by halewang on 2017/3/2.

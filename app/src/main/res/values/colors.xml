@@ -7,4 +7,6 @@
     <color name="colorBtnPressed">#FF6D00</color>
     <color name="itemNormal">#FFFFFF</color>
     <color name="itemPressed">#ceececec</color>
+    <color name="colorTitle">#292929</color>
+    <color name="colorContent">#666666</color>
 </resources>

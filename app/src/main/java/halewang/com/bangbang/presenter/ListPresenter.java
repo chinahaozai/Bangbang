@@ -40,7 +40,7 @@ public class ListPresenter extends BasePresenter<FragmentListView>{
     private void initTabLayout(){
         mTabLayout = getMView().getTabLayout();
         mItems = new ArrayList<>();
-        mItems.add("今日榜");
+        mItems.add("推荐榜");
         mItems.add("赏金榜");
         mItems.add("人气榜");
         mTabLayout.addTab(mTabLayout.newTab().setText(mItems.get(0)));

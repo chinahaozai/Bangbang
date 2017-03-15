@@ -1,20 +1,26 @@
 package halewang.com.bangbang.presenter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
+import halewang.com.bangbang.DetailActivity;
+import halewang.com.bangbang.R;
 import halewang.com.bangbang.adapter.RequirementAdapter;
 import halewang.com.bangbang.model.Requirement;
 import halewang.com.bangbang.view.WatchRequirementView;
@@ -33,6 +39,7 @@ public class WatchRequirementPresenter extends BasePresenter<WatchRequirementVie
     private RequirementAdapter mAdapter;
     private int start = 0;
     private final int LIMIT = 20;
+    private String order = "-updatedAt";
 
     public WatchRequirementPresenter(Context mContext) {
         this.mContext = mContext;
@@ -54,8 +61,25 @@ public class WatchRequirementPresenter extends BasePresenter<WatchRequirementVie
     private void initData() {
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        mRecyclerView.addOnItemTouchListener(new OnItemChildClickListener() {
+            @Override
+            public void onSimpleItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                Requirement requirement = (Requirement)adapter.getItem(position);
+                switch (view.getId()){
+                    case R.id.requirement_item:
+                        Intent intent = new Intent(mContext, DetailActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("requirement",requirement);
+                        intent.putExtra("detail", bundle);
+                        mContext.startActivity(intent);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
         BmobQuery<Requirement> query = new BmobQuery<>();
-        query.setLimit(LIMIT).order("updatedAt").addWhereEqualTo("receiverPhone","");
+        query.setLimit(LIMIT).order(order).addWhereEqualTo("receiverPhone","");
         start += LIMIT;
         query.findObjects(new FindListener<Requirement>() {
             @Override
@@ -82,7 +106,7 @@ public class WatchRequirementPresenter extends BasePresenter<WatchRequirementVie
         BmobQuery<Requirement> query = new BmobQuery<>();
         query.setLimit(LIMIT)
                 .setSkip(start)
-                .order("updatedAt")
+                .order(order)
                 .addWhereEqualTo("receiverPhone","")
                 .findObjects(new FindListener<Requirement>() {
                     @Override
@@ -110,7 +134,7 @@ public class WatchRequirementPresenter extends BasePresenter<WatchRequirementVie
             public void onRefresh() {
                 mAdapter.loadMoreComplete();
                 BmobQuery<Requirement> query = new BmobQuery<>();
-                query.setLimit(LIMIT).order("updatedAt").addWhereEqualTo("receiverPhone","");
+                query.setLimit(LIMIT).order(order).addWhereEqualTo("receiverPhone","");
                 start = LIMIT;
                 query.findObjects(new FindListener<Requirement>() {
                     @Override

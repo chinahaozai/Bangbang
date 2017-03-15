@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:text="培训教育机构网站改版"
-            android:textColor="#292929"
+            android:textColor="@color/colorTitle"
             android:textSize="20sp"/>
         <TextView
             android:id="@+id/tv_content"

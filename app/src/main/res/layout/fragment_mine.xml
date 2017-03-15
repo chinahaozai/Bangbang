@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,32 +15,36 @@
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:background="@drawable/user_center_top_bg"
-            android:paddingTop="30dp"
             android:paddingBottom="30dp"
             android:paddingLeft="12dp"
-            android:paddingRight="15dp">
+            android:paddingRight="15dp"
+            android:paddingTop="30dp">
+
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/iv_avatar"
                 android:layout_width="110dp"
                 android:layout_height="110dp"
-                android:src="@drawable/user_center_default_face"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                android:src="@drawable/user_center_default_face"/>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="8dp"
                 android:layout_toRightOf="@+id/iv_avatar"
-                android:orientation="vertical"
-                android:layout_centerVertical="true">
+                android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/tv_user"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#fff"
                     android:text="请先注册/登录"
+                    android:textColor="#fff"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     />
+
                 <TextView
                     android:id="@+id/tv_phone_num"
                     android:layout_width="wrap_content"
@@ -52,195 +56,225 @@
             <ImageView
                 android:layout_width="18dp"
                 android:layout_height="25dp"
-                android:background="@drawable/user_center_head_arrow"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"/>
+                android:background="@drawable/user_center_head_arrow"/>
         </RelativeLayout>
+
         <LinearLayout
+            android:id="@+id/my_requirement_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="8dp"
-            android:id="@+id/my_requirement_item">
+            android:padding="8dp">
+
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:background="@drawable/ico_order_title"
-                android:layout_marginLeft="10dp"/>
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/ico_order_title"/>
+
             <TextView
-                android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
                 android:text="我的需求"
-                android:textSize="15sp"
-                android:layout_gravity="center_vertical"
                 android:textColor="#131313"
-                android:layout_marginLeft="10dp"/>
+                android:textSize="15sp"/>
+
             <ImageView
                 android:layout_width="13dp"
                 android:layout_height="20dp"
-                android:background="@drawable/order_detail_arrow_gray"
                 android:layout_gravity="center_vertical"
-                android:layout_marginRight="5dp"/>
+                android:layout_marginRight="5dp"
+                android:background="@drawable/order_detail_arrow_gray"/>
         </LinearLayout>
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="12dp"
             android:background="#e6e6e6"/>
+
         <LinearLayout
+            android:id="@+id/my_count_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="8dp"
-            android:id="@+id/my_count_item">
+            android:padding="8dp">
+
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:background="@drawable/my_wallet"
-                android:layout_marginLeft="10dp"/>
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/my_wallet"/>
+
             <TextView
-                android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
                 android:text="我的账户"
-                android:textSize="15sp"
-                android:layout_gravity="center_vertical"
                 android:textColor="#131313"
-                android:layout_marginLeft="10dp"/>
+                android:textSize="15sp"/>
+
             <ImageView
                 android:layout_width="13dp"
                 android:layout_height="20dp"
-                android:background="@drawable/order_detail_arrow_gray"
                 android:layout_gravity="center_vertical"
-                android:layout_marginRight="5dp"/>
+                android:layout_marginRight="5dp"
+                android:background="@drawable/order_detail_arrow_gray"/>
         </LinearLayout>
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="0.1dp"
-            android:background="#dfdddd"
-            android:layout_marginLeft="18dp"/>
+            android:layout_marginLeft="18dp"
+            android:background="#dfdddd"/>
+
         <LinearLayout
+            android:id="@+id/my_attention_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="8dp"
-            android:id="@+id/my_attention_item">
+            android:padding="8dp">
+
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:background="@drawable/icon_user_attention"
-                android:layout_marginLeft="10dp"/>
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/icon_user_attention"/>
+
             <TextView
-                android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
                 android:text="我的关注"
-                android:textSize="15sp"
-                android:layout_gravity="center_vertical"
                 android:textColor="#131313"
-                android:layout_marginLeft="10dp"/>
+                android:textSize="15sp"/>
+
             <ImageView
                 android:layout_width="13dp"
                 android:layout_height="20dp"
-                android:background="@drawable/order_detail_arrow_gray"
                 android:layout_gravity="center_vertical"
-                android:layout_marginRight="5dp"/>
+                android:layout_marginRight="5dp"
+                android:background="@drawable/order_detail_arrow_gray"/>
         </LinearLayout>
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="0.1dp"
-            android:background="#dfdddd"
-            android:layout_marginLeft="18dp"/>
+            android:layout_marginLeft="18dp"
+            android:background="#dfdddd"/>
+
         <LinearLayout
+            android:id="@+id/my_finished_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="8dp"
-            android:id="@+id/my_finished_item">
+            android:padding="8dp">
+
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:background="@drawable/icon_finished_requirement"
-                android:layout_marginLeft="10dp"/>
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/icon_finished_requirement"/>
+
             <TextView
-                android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="认领的任务"
-                android:textSize="15sp"
                 android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:text="认领的任务"
                 android:textColor="#131313"
-                android:layout_marginLeft="10dp"/>
+                android:textSize="15sp"/>
+
             <ImageView
                 android:layout_width="13dp"
                 android:layout_height="20dp"
-                android:background="@drawable/order_detail_arrow_gray"
                 android:layout_gravity="center_vertical"
-                android:layout_marginRight="5dp"/>
+                android:layout_marginRight="5dp"
+                android:background="@drawable/order_detail_arrow_gray"/>
         </LinearLayout>
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="12dp"
             android:background="#e6e6e6"/>
+
         <LinearLayout
+            android:id="@+id/my_about_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="8dp"
-            android:id="@+id/my_about_item">
+            android:padding="8dp">
+
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:background="@drawable/helper"
-                android:layout_marginLeft="10dp"/>
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/helper"/>
+
             <TextView
-                android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="关于软件"
-                android:textSize="15sp"
                 android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:text="关于软件"
                 android:textColor="#131313"
-                android:layout_marginLeft="10dp"/>
+                android:textSize="15sp"/>
+
             <ImageView
                 android:layout_width="13dp"
                 android:layout_height="20dp"
-                android:background="@drawable/order_detail_arrow_gray"
                 android:layout_gravity="center_vertical"
-                android:layout_marginRight="5dp"/>
+                android:layout_marginRight="5dp"
+                android:background="@drawable/order_detail_arrow_gray"/>
         </LinearLayout>
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="0.1dp"
-            android:background="#dfdddd"
-            android:layout_marginLeft="18dp"/>
+            android:layout_marginLeft="18dp"
+            android:background="#dfdddd"/>
+
         <LinearLayout
+            android:id="@+id/my_setting_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="8dp"
-            android:id="@+id/my_setting_item">
+            android:padding="8dp">
+
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:background="@drawable/setting"
-                android:layout_marginLeft="10dp"/>
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/setting"/>
+
             <TextView
-                android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="设置"
-                android:textSize="15sp"
                 android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:text="设置"
                 android:textColor="#131313"
-                android:layout_marginLeft="10dp"/>
+                android:textSize="15sp"/>
+
             <ImageView
                 android:layout_width="13dp"
                 android:layout_height="20dp"
-                android:background="@drawable/order_detail_arrow_gray"
                 android:layout_gravity="center_vertical"
-                android:layout_marginRight="5dp"/>
+                android:layout_marginRight="5dp"
+                android:background="@drawable/order_detail_arrow_gray"/>
         </LinearLayout>
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="12dp"

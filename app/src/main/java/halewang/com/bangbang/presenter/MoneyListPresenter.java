@@ -61,7 +61,6 @@ public class MoneyListPresenter extends BasePresenter<MoneyListView>{
             @Override
             public void done(List<Requirement> list, BmobException e) {
                 if (e == null) {
-                    Log.e(TAG, "done: " + list.toString());
                     mAdapter = new RequirementAdapter(list);
                     mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
                         @Override

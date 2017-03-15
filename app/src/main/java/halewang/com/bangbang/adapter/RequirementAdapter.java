@@ -19,7 +19,8 @@ public class RequirementAdapter extends BaseQuickAdapter<Requirement, BaseViewHo
 
     @Override
     protected void convert(BaseViewHolder helper, Requirement item) {
-        helper.setText(R.id.tv_title,item.getTitle())
+        helper.addOnClickListener(R.id.requirement_item)
+                .setText(R.id.tv_title,item.getTitle())
                 .setText(R.id.tv_content,item.getContent())
                 .setText(R.id.tv_money,item.getMoney()+"¥")
                 .setText(R.id.tv_time,item.getTime())

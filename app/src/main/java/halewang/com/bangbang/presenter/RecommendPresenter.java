@@ -8,26 +8,29 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
+import halewang.com.bangbang.Constant;
 import halewang.com.bangbang.adapter.RequirementAdapter;
 import halewang.com.bangbang.model.Requirement;
+import halewang.com.bangbang.utils.PrefUtil;
 import halewang.com.bangbang.view.RecommendView;
 
 /**
  * Created by halewang on 2017/3/13.
  */
 
-public class RecommendPresenter extends BasePresenter<RecommendView>{
+public class RecommendPresenter extends BasePresenter<RecommendView> {
 
-    private static final String TAG = "MoneyListPresenter";
+    private static final String TAG = "RecommendPresenter";
 
     private Context mContext;
     private SwipeRefreshLayout mRefreshLayout;
@@ -36,7 +39,7 @@ public class RecommendPresenter extends BasePresenter<RecommendView>{
     private int start = 0;
     private final int LIMIT = 20;
 
-    public RecommendPresenter(Context mContext){
+    public RecommendPresenter(Context mContext) {
         this.mContext = mContext;
     }
 
@@ -48,7 +51,7 @@ public class RecommendPresenter extends BasePresenter<RecommendView>{
         initRefresh();
     }
 
-    private void initView(){
+    private void initView() {
         mRefreshLayout = getMView().getSwipeRefreshLayout();
         mRecyclerView = getMView().getRecyclerView();
     }
@@ -57,14 +60,12 @@ public class RecommendPresenter extends BasePresenter<RecommendView>{
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         BmobQuery<Requirement> query = new BmobQuery<>();
-        query.addWhereEqualTo("receiverPhone","");
+        query.addWhereEqualTo("receiverPhone", "");
         query.findObjects(new FindListener<Requirement>() {
             @Override
             public void done(List<Requirement> list, BmobException e) {
                 if (e == null) {
-                    Log.e(TAG, "done: " + list.toString());
-                    //list.sort(mComparator);
-                    Collections.sort(list,mComparator);
+                    Collections.sort(list, mComparator);
                     mAdapter = new RequirementAdapter(list);
 
                     mRecyclerView.setAdapter(mAdapter);
@@ -77,17 +78,18 @@ public class RecommendPresenter extends BasePresenter<RecommendView>{
     }
 
 
-    private void initRefresh(){
+    private void initRefresh() {
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 mAdapter.loadMoreComplete();
                 BmobQuery<Requirement> query = new BmobQuery<>();
-                query.addWhereEqualTo("receiverPhone","");
+                query.addWhereEqualTo("receiverPhone", "");
                 query.findObjects(new FindListener<Requirement>() {
                     @Override
                     public void done(List<Requirement> list, BmobException e) {
                         if (e == null) {
+                            Collections.sort(list, mComparator);
                             mAdapter.refreshData(list);
                         } else {
                             Toast.makeText(mContext, "查询失败", Toast.LENGTH_SHORT).show();
@@ -114,10 +116,48 @@ public class RecommendPresenter extends BasePresenter<RecommendView>{
 
     /**
      * 根据时间、赏金、热度和地点四个条件算出Requirement的权重
+     *
      * @param requirement
      * @return
      */
-    private int getWeight(Requirement requirement){
-        return requirement.getMoney() * 1 + requirement.getWatchCount() * 1;
+    private double getWeight(Requirement requirement) {
+        double moneyWeight = Math.log(requirement.getMoney()*0.5);
+        double hotWeight = Math.log(requirement.getWatchCount()) * 2;
+        double timeWeight = getTimeWeight(requirement.getTime());
+        double sitWeight = getSiteWeight(requirement.getSite());
+        return moneyWeight + hotWeight - timeWeight + sitWeight;
+    }
+
+    private int getSiteWeight(String site) {
+        String s1 = site.substring(0, site.indexOf("省"));
+        String s2 = site.substring(site.indexOf("省"), site.indexOf("市"));
+        String mySite = PrefUtil.getString(mContext, Constant.LOCATION, "");
+        String s3 = mySite.substring(0, site.indexOf("省"));
+        String s4 = mySite.substring(mySite.indexOf("省"), mySite.indexOf("市"));
+
+        int weight = 0;
+        if (s1.equals(s3)) {
+            weight++;
+        }
+        if (s2.equals(s4)) {
+            weight++;
+        }
+        return weight * 2;
+    }
+
+    private double getTimeWeight(String time) {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        double days = 0;
+        try {
+            Date d1 = new Date();
+            Date d2 = df.parse(time);
+            long diff = d1.getTime() - d2.getTime();
+            days = diff / (1000 * 60 * 60 * 24);
+            Log.d(TAG, "getTime: " + time);
+            Log.d(TAG, "getTimeWeight: "+ Math.log(days));
+        } catch (Exception e) {
+            Log.e(TAG, "getTimeWeight: " + e.getMessage());
+        }
+        return Math.log(days)*0.8;
     }
 }

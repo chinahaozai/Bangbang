@@ -162,7 +162,7 @@ public class PostRequirementActivity extends AppCompatActivity {
     }
 
     private String getCurrentTime(){
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return format.format(new Date());
     }
 }
