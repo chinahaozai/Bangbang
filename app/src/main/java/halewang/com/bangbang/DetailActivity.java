@@ -1,5 +1,6 @@
 package halewang.com.bangbang;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -72,6 +73,12 @@ public class DetailActivity extends AppCompatActivity {
         content.setText(requirement.getContent());
         updateTime.setText(requirement.getUpdatedAt());
         site.setText(requirement.getSite());
+        site.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(DetailActivity.this,MapActivity.class));
+            }
+        });
 
         if(!MainActivity.watchedRequirement.contains(requirement.getObjectId())){
             MainActivity.watchedRequirement.add(requirement.getObjectId());
