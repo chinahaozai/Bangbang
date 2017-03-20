@@ -44,6 +44,8 @@ public class PostRequirementActivity extends AppCompatActivity {
     public AMapLocationClientOption mLocationOption = null;
 
     private String location;
+    private double latitude;
+    private double longitude;
 
 
     @Override
@@ -118,6 +120,8 @@ public class PostRequirementActivity extends AppCompatActivity {
                         //解析定位结果
                         Log.d(TAG, "onLocationChanged: " + amapLocation.getAddress());
                         location = amapLocation.getAddress();
+                        latitude = amapLocation.getLatitude();
+                        longitude = amapLocation.getLongitude();
                     }
                 }
             }
@@ -147,6 +151,8 @@ public class PostRequirementActivity extends AppCompatActivity {
         requirement.setInitiatorPhone(PrefUtil.getString(PostRequirementActivity.this,Constant.PHONE,""));
         requirement.setReceiverPhone("");
         requirement.setInstallationId(BmobInstallation.getInstallationId(PostRequirementActivity.this));
+        requirement.setLatitude(String.valueOf(latitude));
+        requirement.setLongitude(String.valueOf(longitude));
         requirement.save(new SaveListener<String>() {
             @Override
             public void done(String s, BmobException e) {

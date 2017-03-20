@@ -27,6 +27,8 @@ public class DetailActivity extends AppCompatActivity {
     private TextView updateTime;
     private TextView site;
     private Button btnEnsure;
+    private String latitude;
+    private String longitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,10 +78,17 @@ public class DetailActivity extends AppCompatActivity {
         site.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(DetailActivity.this,MapActivity.class));
+                Intent intent = new Intent(DetailActivity.this, MapActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("latitude",latitude);
+                bundle.putString("longitude",longitude);
+                intent.putExtra("position", bundle);
+                startActivity(intent);
             }
         });
-
+        latitude = requirement.getLatitude();
+        longitude = requirement.getLongitude();
+        //判断当前设备是否查看了这条需求，如果没有则该条需求查看数+1
         if(!MainActivity.watchedRequirement.contains(requirement.getObjectId())){
             MainActivity.watchedRequirement.add(requirement.getObjectId());
             requirement.setWatchCount(requirement.getWatchCount()+1);

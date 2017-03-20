@@ -18,6 +18,8 @@ public class Requirement extends BmobObject {
     private String site;            //位置信息
     private String receiverPhone;   //接收人手机号
     private String installationId;  //推送需要的installationId
+    private String latitude;
+    private String longitude;
 
     public String getInitiatorPhone() {
         return initiatorPhone;
@@ -99,6 +101,22 @@ public class Requirement extends BmobObject {
         this.installationId = installationId;
     }
 
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
     @Override
     public String toString() {
         return "Requirement{" +
@@ -106,12 +124,14 @@ public class Requirement extends BmobObject {
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", time='" + time + '\'' +
-                ", money='" + money + '\'' +
-                ", watchCount='" + watchCount + '\'' +
+                ", money=" + money +
+                ", watchCount=" + watchCount +
                 ", status='" + status + '\'' +
                 ", site='" + site + '\'' +
                 ", receiverPhone='" + receiverPhone + '\'' +
                 ", installationId='" + installationId + '\'' +
+                ", latitude='" + latitude + '\'' +
+                ", longitude='" + longitude + '\'' +
                 '}';
     }
 }
