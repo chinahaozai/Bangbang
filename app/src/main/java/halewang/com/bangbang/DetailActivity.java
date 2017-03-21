@@ -4,10 +4,19 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
+import com.amap.api.services.geocoder.GeocodeSearch;
+
+import java.util.concurrent.ExecutorService;
 
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.UpdateListener;
@@ -29,6 +38,11 @@ public class DetailActivity extends AppCompatActivity {
     private Button btnEnsure;
     private String latitude;
     private String longitude;
+    private String myLatitude = "";
+    private String myLongitude = "";
+    private AMapLocationClient mLocationClient;
+    //声明AMapLocationClientOption对象
+    public AMapLocationClientOption mLocationOption = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +52,7 @@ public class DetailActivity extends AppCompatActivity {
         initToolBar();
         initView();
         initData();
+        initLocation();
     }
 
     private void initToolBar() {
@@ -78,10 +93,16 @@ public class DetailActivity extends AppCompatActivity {
         site.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(myLongitude.isEmpty()||myLatitude.isEmpty()){
+                    Toast.makeText(DetailActivity.this,"定位中。。。",Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 Intent intent = new Intent(DetailActivity.this, MapActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("latitude",latitude);
                 bundle.putString("longitude",longitude);
+                bundle.putString("myLatitude",myLatitude);
+                bundle.putString("myLongitude",myLongitude);
                 intent.putExtra("position", bundle);
                 startActivity(intent);
             }
@@ -102,5 +123,37 @@ public class DetailActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    private void initLocation(){
+        //初始化定位
+        mLocationClient = new AMapLocationClient(getApplicationContext());
+        //初始化AMapLocationClientOption对象
+        mLocationOption = new AMapLocationClientOption();
+        //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        //获取一次定位结果：
+        //该方法默认为false。
+        mLocationOption.setOnceLocation(true);
+        //获取最近3s内精度最高的一次定位结果：
+        //设置setOnceLocationLatest(boolean b)接口为true，启动定位时SDK会返回最近3s内精度最高的一次定位结果。如果设置其为true，setOnceLocation(boolean b)接口也会被设置为true，反之不会，默认为false。
+        mLocationOption.setOnceLocationLatest(true);
+        //设置是否返回地址信息（默认返回地址信息）
+        mLocationOption.setNeedAddress(true);
+        mLocationClient.setLocationOption(mLocationOption);
+        //设置定位回调监听
+        mLocationClient.setLocationListener(new AMapLocationListener() {
+            @Override
+            public void onLocationChanged(AMapLocation amapLocation) {
+                if (amapLocation != null) {
+                    if (amapLocation.getErrorCode() == 0) {
+                        myLatitude = String.valueOf(amapLocation.getLatitude());
+                        myLongitude = String.valueOf(amapLocation.getLongitude());
+                    }
+                }
+            }
+        });
+        //启动定位
+        mLocationClient.startLocation();
     }
 }

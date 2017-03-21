@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,13 +28,15 @@ import halewang.com.bangbang.widght.DrivingRouteOverlay;
 
 
 public class MapActivity extends AppCompatActivity implements RouteSearch.OnRouteSearchListener{
-    MapView mMapView = null;
-    AMap aMap;
+
+    private MapView mMapView = null;
+    private AMap aMap;
+    private Toolbar mToolbar;
     private Context mContext;
     private RouteSearch mRouteSearch;
     private DriveRouteResult mDriveRouteResult;
-    private LatLonPoint mStartPoint; /*= new LatLonPoint(39.942295,116.335891);//起点，39.942295,116.335891*/
-    private LatLonPoint mEndPoint; /*= new LatLonPoint(39.995576,116.481288);//终点，39.995576,116.481288*/
+    private LatLonPoint mStartPoint;
+    private LatLonPoint mEndPoint;
 
     private final int ROUTE_TYPE_DRIVE = 2;
 
@@ -53,31 +56,41 @@ public class MapActivity extends AppCompatActivity implements RouteSearch.OnRout
         aMap.getUiSettings().setMyLocationButtonEnabled(true);//设置默认定位按钮是否显示，非必需设置。
         aMap.setMyLocationEnabled(true);// 设置为true表示启动显示定位蓝点，false表示隐藏定位蓝点并不进行定位，默认是false。*/
         init();
-
+        initToolBar();
         setFromAndToMarker();
         searchRouteResult(ROUTE_TYPE_DRIVE, RouteSearch.DrivingDefault);
+    }
+
+    private void initToolBar() {
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar.setTitle("驾车路线规划");
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     /**
      * 初始化AMap对象
      */
     private void init() {
-        mStartPoint = new LatLonPoint(38.8615041,121.5238262);
         String latitude = getIntent().getBundleExtra("position").getString("latitude");
         String longitude = getIntent().getBundleExtra("position").getString("longitude");
+        String myLatitude = getIntent().getBundleExtra("position").getString("myLatitude");
+        String myLongitude = getIntent().getBundleExtra("position").getString("myLongitude");
+        mStartPoint = new LatLonPoint(Double.valueOf(myLatitude),Double.valueOf(myLongitude));
         mEndPoint = new LatLonPoint(Double.valueOf(latitude),Double.valueOf(longitude));
 
         if (aMap == null) {
             aMap = mMapView.getMap();
         }
-        //registerListener();
+
         mRouteSearch = new RouteSearch(this);
         mRouteSearch.setRouteSearchListener(this);
-        /*mBottomLayout = (RelativeLayout) findViewById(R.id.bottom_layout);
-        mHeadLayout = (RelativeLayout)findViewById(R.id.routemap_header);
-        mRotueTimeDes = (TextView) findViewById(R.id.firstline);
-        mRouteDetailDes = (TextView) findViewById(R.id.secondline);
-        mHeadLayout.setVisibility(View.GONE);*/
     }
 
     private void setFromAndToMarker() {
