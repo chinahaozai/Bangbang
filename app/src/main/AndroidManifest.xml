@@ -122,6 +122,8 @@
         </activity>
         <activity android:name=".MapActivity">
         </activity>
+        <activity android:name=".MyRequirementActivity">
+        </activity>
     </application>
 
 </manifest>

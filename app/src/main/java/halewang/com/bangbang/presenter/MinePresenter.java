@@ -3,6 +3,7 @@ package halewang.com.bangbang.presenter;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -13,6 +14,7 @@ import cn.smssdk.SMSSDK;
 import cn.smssdk.gui.RegisterPage;
 import halewang.com.bangbang.Constant;
 import halewang.com.bangbang.LoginActivity;
+import halewang.com.bangbang.MyRequirementActivity;
 import halewang.com.bangbang.UserInfoActivity;
 import halewang.com.bangbang.utils.PrefUtil;
 import halewang.com.bangbang.view.FragmentMineView;
@@ -25,6 +27,7 @@ public class MinePresenter extends BasePresenter<FragmentMineView>{
     private Context mContext;
     private RelativeLayout rlUserItem;
     private TextView tvUser;
+    private LinearLayout myRequirement;
     public MinePresenter(Context mContext){
         this.mContext = mContext;
     }
@@ -39,6 +42,7 @@ public class MinePresenter extends BasePresenter<FragmentMineView>{
     private void initView(){
         rlUserItem = getMView().getUserItem();
         tvUser = getMView().getTvUser();
+        myRequirement = getMView().getMyRequirenment();
     }
 
     private void initData(){
@@ -50,6 +54,13 @@ public class MinePresenter extends BasePresenter<FragmentMineView>{
                 }else {
                     mContext.startActivity(new Intent(mContext, LoginActivity.class));
                 }
+            }
+        });
+
+        myRequirement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mContext.startActivity(new Intent(mContext, MyRequirementActivity.class));
             }
         });
 

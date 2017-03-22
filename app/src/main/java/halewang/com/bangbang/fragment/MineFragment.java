@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -29,6 +30,7 @@ public class MineFragment extends BaseFragment<FragmentMineView, MinePresenter> 
     private CircleImageView ivAvatar;
     private TextView tvUser;
     private TextView tvPhoneNum;
+    private LinearLayout myRequirement;
 
     @Override
     public MinePresenter initPresenter() {
@@ -42,6 +44,7 @@ public class MineFragment extends BaseFragment<FragmentMineView, MinePresenter> 
         ivAvatar = (CircleImageView) mView.findViewById(R.id.iv_avatar);
         tvUser = (TextView) mView.findViewById(R.id.tv_user);
         tvPhoneNum = (TextView) mView.findViewById(R.id.tv_phone_num);
+        myRequirement = (LinearLayout) mView.findViewById(R.id.my_requirement_item);
         return mView;
     }
 
@@ -58,6 +61,11 @@ public class MineFragment extends BaseFragment<FragmentMineView, MinePresenter> 
     @Override
     public TextView getTvUser() {
         return (TextView) mView.findViewById(R.id.tv_user);
+    }
+
+    @Override
+    public LinearLayout getMyRequirenment() {
+        return myRequirement;
     }
 
     @Override
