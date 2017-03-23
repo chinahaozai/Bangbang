@@ -79,7 +79,7 @@ public class MoneyListPresenter extends BasePresenter<MoneyListView>{
             }
         });
         BmobQuery<Requirement> query = new BmobQuery<>();
-        query.setLimit(LIMIT).order("-money").addWhereEqualTo("receiverPhone","");
+        query.setLimit(LIMIT).order("-money");
         start += LIMIT;
         query.findObjects(new FindListener<Requirement>() {
             @Override
@@ -106,7 +106,6 @@ public class MoneyListPresenter extends BasePresenter<MoneyListView>{
         query.setLimit(LIMIT)
                 .setSkip(start)
                 .order("-money")
-                .addWhereEqualTo("receiverPhone","")
                 .findObjects(new FindListener<Requirement>() {
                     @Override
                     public void done(List<Requirement> list, BmobException e) {
@@ -133,7 +132,7 @@ public class MoneyListPresenter extends BasePresenter<MoneyListView>{
             public void onRefresh() {
                 mAdapter.loadMoreComplete();
                 BmobQuery<Requirement> query = new BmobQuery<>();
-                query.setLimit(LIMIT).order("-money").addWhereEqualTo("receiverPhone","");
+                query.setLimit(LIMIT).order("-money");
                 start = LIMIT;
                 query.findObjects(new FindListener<Requirement>() {
                     @Override

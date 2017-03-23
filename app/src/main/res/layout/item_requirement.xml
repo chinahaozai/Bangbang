@@ -20,6 +20,7 @@
             android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginRight="40dp"
             android:maxLines="1"
             android:text="培训教育机构网站改版"
             android:textColor="@color/colorTitle"
@@ -28,6 +29,7 @@
             android:id="@+id/tv_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginRight="40dp"
             android:layout_marginTop="15dp"
             android:maxLines="2"
             android:textColor="#606060"
@@ -77,5 +79,13 @@
 
         </LinearLayout>
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:src="@drawable/ic_status"
+        android:visibility="invisible"/>
 
 </android.support.v7.widget.CardView>

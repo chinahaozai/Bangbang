@@ -63,7 +63,7 @@ public class MyRequirementActivity extends AppCompatActivity {
                 Requirement requirement = (Requirement)adapter.getItem(position);
                 switch (view.getId()){
                     case R.id.requirement_item:
-                        Intent intent = new Intent(MyRequirementActivity.this, DetailActivity.class);
+                        Intent intent = new Intent(MyRequirementActivity.this, Detail2Activity.class);
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("requirement",requirement);
                         intent.putExtra("detail", bundle);

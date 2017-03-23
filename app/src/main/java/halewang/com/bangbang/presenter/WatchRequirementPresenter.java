@@ -79,7 +79,7 @@ public class WatchRequirementPresenter extends BasePresenter<WatchRequirementVie
             }
         });
         BmobQuery<Requirement> query = new BmobQuery<>();
-        query.setLimit(LIMIT).order(order).addWhereEqualTo("receiverPhone","");
+        query.setLimit(LIMIT).order(order);
         start += LIMIT;
         query.findObjects(new FindListener<Requirement>() {
             @Override
@@ -106,7 +106,6 @@ public class WatchRequirementPresenter extends BasePresenter<WatchRequirementVie
         query.setLimit(LIMIT)
                 .setSkip(start)
                 .order(order)
-                .addWhereEqualTo("receiverPhone","")
                 .findObjects(new FindListener<Requirement>() {
                     @Override
                     public void done(List<Requirement> list, BmobException e) {
@@ -133,7 +132,7 @@ public class WatchRequirementPresenter extends BasePresenter<WatchRequirementVie
             public void onRefresh() {
                 mAdapter.loadMoreComplete();
                 BmobQuery<Requirement> query = new BmobQuery<>();
-                query.setLimit(LIMIT).order(order).addWhereEqualTo("receiverPhone","");
+                query.setLimit(LIMIT).order(order);
                 start = LIMIT;
                 query.findObjects(new FindListener<Requirement>() {
                     @Override

@@ -85,7 +85,6 @@ public class RecommendPresenter extends BasePresenter<RecommendView> {
             }
         });
         BmobQuery<Requirement> query = new BmobQuery<>();
-        query.addWhereEqualTo("receiverPhone", "");
         query.findObjects(new FindListener<Requirement>() {
             @Override
             public void done(List<Requirement> list, BmobException e) {
@@ -109,7 +108,6 @@ public class RecommendPresenter extends BasePresenter<RecommendView> {
             public void onRefresh() {
                 mAdapter.loadMoreComplete();
                 BmobQuery<Requirement> query = new BmobQuery<>();
-                query.addWhereEqualTo("receiverPhone", "");
                 query.findObjects(new FindListener<Requirement>() {
                     @Override
                     public void done(List<Requirement> list, BmobException e) {

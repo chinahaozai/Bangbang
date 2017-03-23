@@ -1,5 +1,7 @@
 package halewang.com.bangbang.adapter;
 
+import android.util.Log;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
@@ -25,5 +27,11 @@ public class RequirementAdapter extends BaseQuickAdapter<Requirement, BaseViewHo
                 .setText(R.id.tv_money,item.getMoney()+"¥")
                 .setText(R.id.tv_time,item.getTime())
                 .setText(R.id.tv_watch_count,String.valueOf(item.getWatchCount()));
+        if(!item.getReceiverPhone().equals("")){
+             helper.setVisible(R.id.iv_status,true);
+        }else{
+            helper.setVisible(R.id.iv_status,false);
+
+        }
     }
 }

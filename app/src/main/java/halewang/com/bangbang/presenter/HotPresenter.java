@@ -79,7 +79,7 @@ public class HotPresenter extends BasePresenter<HotView>{
             }
         });
         BmobQuery<Requirement> query = new BmobQuery<>();
-        query.setLimit(LIMIT).order("-watchCount").addWhereEqualTo("receiverPhone","");
+        query.setLimit(LIMIT).order("-watchCount");
         start += LIMIT;
         query.findObjects(new FindListener<Requirement>() {
             @Override
@@ -106,7 +106,6 @@ public class HotPresenter extends BasePresenter<HotView>{
         query.setLimit(LIMIT)
                 .setSkip(start)
                 .order("-watchCount")
-                .addWhereEqualTo("receiverPhone","")
                 .findObjects(new FindListener<Requirement>() {
                     @Override
                     public void done(List<Requirement> list, BmobException e) {
@@ -133,7 +132,7 @@ public class HotPresenter extends BasePresenter<HotView>{
             public void onRefresh() {
                 mAdapter.loadMoreComplete();
                 BmobQuery<Requirement> query = new BmobQuery<>();
-                query.setLimit(LIMIT).order("-watchCount").addWhereEqualTo("receiverPhone","");
+                query.setLimit(LIMIT).order("-watchCount");
                 start = LIMIT;
                 query.findObjects(new FindListener<Requirement>() {
                     @Override
