@@ -1,6 +1,7 @@
 package halewang.com.bangbang;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -83,7 +84,11 @@ public class Detail2Activity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.write:
-                //post();
+                Intent intent = new Intent(this, PostRequirementActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("requirement",mRequirement);
+                intent.putExtra("detail", bundle);
+                startActivity(intent);
                 return true;
             case R.id.delete:
                 showDeleteDialog();

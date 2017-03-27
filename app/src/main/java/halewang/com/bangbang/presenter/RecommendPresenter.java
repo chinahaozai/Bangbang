@@ -147,8 +147,8 @@ public class RecommendPresenter extends BasePresenter<RecommendView> {
         double moneyWeight = Math.log(requirement.getMoney()*0.5);
         double hotWeight = Math.log(requirement.getWatchCount()) * 2;
         double timeWeight = getTimeWeight(requirement.getTime());
-        double sitWeight = getSiteWeight(requirement.getSite());
-        return moneyWeight + hotWeight - timeWeight + sitWeight;
+        //double sitWeight = getSiteWeight(requirement.getSite());
+        return moneyWeight + hotWeight - timeWeight/* + sitWeight*/;
     }
 
     private int getSiteWeight(String site) {

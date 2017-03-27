@@ -154,7 +154,12 @@ public class DetailActivity extends AppCompatActivity {
                     if (amapLocation.getErrorCode() == 0) {
                         myLatitude = String.valueOf(amapLocation.getLatitude());
                         myLongitude = String.valueOf(amapLocation.getLongitude());
+                        Log.d("halewang", "onLocationChanged: 有正确结果");
+                    }else{
+                        Log.d("halewang", "onLocationChanged: ErrorCode is 0");
                     }
+                }else{
+                    Log.d("halewang", "onLocationChanged: amapLocation is null");
                 }
             }
         });

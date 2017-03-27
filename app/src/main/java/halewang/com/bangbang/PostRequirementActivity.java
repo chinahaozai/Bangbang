@@ -1,5 +1,7 @@
 package halewang.com.bangbang;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -25,6 +27,7 @@ import java.util.Random;
 import cn.bmob.v3.BmobInstallation;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
 import halewang.com.bangbang.model.Requirement;
 import halewang.com.bangbang.utils.PrefUtil;
 
@@ -46,6 +49,7 @@ public class PostRequirementActivity extends AppCompatActivity {
     private String location;
     private double latitude;
     private double longitude;
+    private boolean isWrite = false;    //判断是否是从点击编辑启动的界面
 
 
     @Override
@@ -56,6 +60,7 @@ public class PostRequirementActivity extends AppCompatActivity {
         initToolBar();
         initView();
         initLocation();
+        initData();
     }
 
     private void initToolBar() {
@@ -170,5 +175,47 @@ public class PostRequirementActivity extends AppCompatActivity {
     private String getCurrentTime(){
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return format.format(new Date());
+    }
+
+    private void initData(){
+        if(getIntent().getBundleExtra("detail")!=null) {
+            Requirement requirement = (Requirement) getIntent().getBundleExtra("detail").getSerializable("requirement");
+            if (requirement != null) {
+                isWrite = true;
+                etTitle.setText(requirement.getTitle());
+                etContent.setText(requirement.getContent());
+                etMoney.setText(String.valueOf(requirement.getMoney()));
+            }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(isWrite){
+            showGiveUp();
+        }else{
+            super.onBackPressed();
+        }
+    }
+
+    private void showGiveUp(){
+        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+        android.support.v7.app.AlertDialog dialog = builder.create();
+        dialog.setTitle("放弃编辑");
+        dialog.setMessage("若放弃编辑，则此次编辑的内容将会丢失，并无法回复，确定放弃？");
+        dialog.setButton(android.support.v7.app.AlertDialog.BUTTON_NEGATIVE, "取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "放弃", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        dialog.show();
+
     }
 }
