@@ -1,9 +1,14 @@
 package halewang.com.bangbang;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -14,19 +19,21 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
-import com.amap.api.services.geocoder.GeocodeSearch;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 
+import cn.bmob.v3.BmobInstallation;
+import cn.bmob.v3.BmobPushManager;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.PushListener;
 import cn.bmob.v3.listener.UpdateListener;
 import de.hdodenhof.circleimageview.CircleImageView;
 import halewang.com.bangbang.model.Requirement;
 import halewang.com.bangbang.model.User;
+import halewang.com.bangbang.utils.PrefUtil;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -48,12 +55,15 @@ public class DetailActivity extends AppCompatActivity {
     private AMapLocationClient mLocationClient;
     //声明AMapLocationClientOption对象
     public AMapLocationClientOption mLocationOption = null;
+    private Requirement requirement;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
+        mContext = this;
         initToolBar();
         initView();
         initData();
@@ -87,7 +97,11 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void initData(){
-        Requirement requirement = (Requirement) getIntent().getBundleExtra("detail").getSerializable("requirement");
+        requirement = (Requirement) getIntent().getBundleExtra("detail").getSerializable("requirement");
+        if(!TextUtils.isEmpty(requirement.getReceiverPhone())){
+            btnEnsure.setEnabled(false);
+            btnEnsure.setText("已被认领");
+        }
         initUser(requirement.getInitiatorPhone());
         //user.setText(requirement.getInitiatorPhone());
         money.setText(requirement.getMoney()+"¥");
@@ -99,10 +113,10 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(myLongitude.isEmpty()||myLatitude.isEmpty()){
-                    Toast.makeText(DetailActivity.this,"定位中。。。",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext,"定位中。。。",Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Intent intent = new Intent(DetailActivity.this, MapActivity.class);
+                Intent intent = new Intent(mContext, MapActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("latitude",latitude);
                 bundle.putString("longitude",longitude);
@@ -122,12 +136,23 @@ public class DetailActivity extends AppCompatActivity {
                 @Override
                 public void done(BmobException e) {
                     if(e != null){
-                        Toast.makeText(DetailActivity.this,"数据发生变化，请重试",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext,"数据发生变化，请重试",Toast.LENGTH_SHORT).show();
                         finish();
                     }
                 }
             });
         }
+
+        btnEnsure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!PrefUtil.getBoolean(mContext,Constant.IS_ONLINE,false)){
+                    startActivity(new Intent(mContext,LoginActivity.class));
+                }else {
+                    showEnsureDialog();
+                }
+            }
+        });
     }
 
     private void initLocation(){
@@ -154,9 +179,6 @@ public class DetailActivity extends AppCompatActivity {
                     if (amapLocation.getErrorCode() == 0) {
                         myLatitude = String.valueOf(amapLocation.getLatitude());
                         myLongitude = String.valueOf(amapLocation.getLongitude());
-                        Log.d("halewang", "onLocationChanged: 有正确结果");
-                    }else{
-                        Log.d("halewang", "onLocationChanged: ErrorCode is 0");
                     }
                 }else{
                     Log.d("halewang", "onLocationChanged: amapLocation is null");
@@ -183,10 +205,64 @@ public class DetailActivity extends AppCompatActivity {
                         tvUser.setText(user1.getName());
                     }
                     if(!user1.getAvatar().isEmpty()){
-                        Glide.with(DetailActivity.this)
+                        Glide.with(mContext)
                                 .load(user1.getAvatar())
                                 .into(avatar);
                     }
+                }
+            }
+        });
+    }
+
+    private void showEnsureDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.setTitle("认领需求");
+        alertDialog.setMessage("确定要认领这个需求吗？");
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "点错了", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                updateRequirement();
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.show();
+    }
+
+    private void updateRequirement(){
+        requirement.setReceiverPhone(PrefUtil.getString(mContext,Constant.PHONE,""));
+        requirement.update(new UpdateListener() {
+            @Override
+            public void done(BmobException e) {
+                if(e == null){
+                    sendNotify();
+                    btnEnsure.setEnabled(false);
+                    btnEnsure.setText("已被认领");
+                }else{
+                    Toast.makeText(mContext,"认领失败，请检查网络",Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+    private void sendNotify(){
+        String installationId = requirement.getInstallationId();
+        BmobPushManager bmobPush = new BmobPushManager();
+        BmobQuery<BmobInstallation> query = BmobInstallation.getQuery();
+        query.addWhereEqualTo("installationId", installationId);
+        bmobPush.setQuery(query);
+        bmobPush.pushMessage("你的需求已经被认领了，点击查看是谁认领了你的需求", new PushListener() {
+            @Override
+            public void done(BmobException e) {
+                if(e == null){
+                    Snackbar.make(btnEnsure, "认领成功，已通知需求发起人", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 }
             }
         });
