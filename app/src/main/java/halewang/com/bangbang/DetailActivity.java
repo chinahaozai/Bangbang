@@ -257,7 +257,7 @@ public class DetailActivity extends AppCompatActivity {
         BmobQuery<BmobInstallation> query = BmobInstallation.getQuery();
         query.addWhereEqualTo("installationId", installationId);
         bmobPush.setQuery(query);
-        bmobPush.pushMessage("你的需求已经被认领了，点击查看是谁认领了你的需求", new PushListener() {
+        bmobPush.pushMessage(requirement.getObjectId(), new PushListener() {
             @Override
             public void done(BmobException e) {
                 if(e == null){

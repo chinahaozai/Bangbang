@@ -12,10 +12,17 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
+import java.util.List;
+
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.UpdateListener;
 import de.hdodenhof.circleimageview.CircleImageView;
 import halewang.com.bangbang.model.Requirement;
+import halewang.com.bangbang.model.User;
 
 public class Detail2Activity extends AppCompatActivity {
 
@@ -23,7 +30,7 @@ public class Detail2Activity extends AppCompatActivity {
     private Toolbar mToolbar;
     private CircleImageView avatar;
     private TextView phone;
-    private TextView user;
+    private TextView tvUser;
     private TextView money;
     private TextView title;
     private TextView content;
@@ -56,7 +63,7 @@ public class Detail2Activity extends AppCompatActivity {
     private void initView(){
         avatar = (CircleImageView) findViewById(R.id.iv_avatar);
         phone = (TextView) findViewById(R.id.tv_phone_num);
-        user = (TextView) findViewById(R.id.tv_user);
+        tvUser = (TextView) findViewById(R.id.tv_user);
         money = (TextView) findViewById(R.id.tv_money);
         title = (TextView) findViewById(R.id.tv_title);
         content = (TextView) findViewById(R.id.tv_content);
@@ -72,6 +79,7 @@ public class Detail2Activity extends AppCompatActivity {
         title.setText(mRequirement.getTitle());
         content.setText(mRequirement.getContent());
         updateTime.setText(mRequirement.getUpdatedAt());
+        initUser(mRequirement.getInitiatorPhone());
     }
 
     @Override
@@ -128,5 +136,30 @@ public class Detail2Activity extends AppCompatActivity {
         });
         dialog.show();
 
+    }
+
+    private void initUser(String phoneNum){
+        String temp = phoneNum.substring(3, 7);
+        phone.setText(phoneNum.replace(temp, "****"));
+        final BmobQuery<User> user = new BmobQuery<>();
+        user.addWhereEqualTo("phone",phoneNum);
+        user.findObjects(new FindListener<User>() {
+            @Override
+            public void done(List<User> list, BmobException e) {
+                if(list.size() > 0){
+                    User user1 = list.get(0);
+                    if(user1.getName().isEmpty()){
+                        tvUser.setVisibility(View.GONE);
+                    }else{
+                        tvUser.setText(user1.getName());
+                    }
+                    if(!user1.getAvatar().isEmpty()){
+                        Glide.with(Detail2Activity.this)
+                                .load(user1.getAvatar())
+                                .into(avatar);
+                    }
+                }
+            }
+        });
     }
 }

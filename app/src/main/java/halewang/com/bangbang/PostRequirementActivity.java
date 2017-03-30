@@ -202,7 +202,7 @@ public class PostRequirementActivity extends AppCompatActivity {
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
         android.support.v7.app.AlertDialog dialog = builder.create();
         dialog.setTitle("放弃编辑");
-        dialog.setMessage("若放弃编辑，则此次编辑的内容将会丢失，并无法回复，确定放弃？");
+        dialog.setMessage("若放弃编辑，则此次编辑的内容将会丢失，并无法恢复，确定放弃？");
         dialog.setButton(android.support.v7.app.AlertDialog.BUTTON_NEGATIVE, "取消", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
