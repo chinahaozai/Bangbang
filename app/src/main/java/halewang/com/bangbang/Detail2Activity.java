@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,9 +35,12 @@ public class Detail2Activity extends AppCompatActivity {
     private TextView tvUser;
     private TextView money;
     private TextView title;
+    private TextView call;
     private TextView content;
     private TextView updateTime;
+    private Button btnFinish;
     private Requirement mRequirement;
+    private boolean haveReceiver = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,16 +68,34 @@ public class Detail2Activity extends AppCompatActivity {
     private void initView(){
         avatar = (CircleImageView) findViewById(R.id.iv_avatar);
         phone = (TextView) findViewById(R.id.tv_phone_num);
+        call = (TextView) findViewById(R.id.tv_call);
         tvUser = (TextView) findViewById(R.id.tv_user);
         money = (TextView) findViewById(R.id.tv_money);
         title = (TextView) findViewById(R.id.tv_title);
         content = (TextView) findViewById(R.id.tv_content);
         updateTime = (TextView) findViewById(R.id.tv_update_time);
-
+        btnFinish = (Button) findViewById(R.id.btn_finish);
     }
 
     private void initData(){
         mRequirement = (Requirement) getIntent().getBundleExtra("detail").getSerializable("requirement");
+        if(!TextUtils.isEmpty(mRequirement.getReceiverPhone())){
+            haveReceiver = true;
+            call.setVisibility(View.VISIBLE);
+            call.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+            btnFinish.setVisibility(View.VISIBLE);
+            btnFinish.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+        }
         phone.setText(mRequirement.getInitiatorPhone());
         //user.setText(requirement.getInitiatorPhone());
         money.setText(mRequirement.getMoney()+"¥");
@@ -90,20 +113,25 @@ public class Detail2Activity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.write:
-                Intent intent = new Intent(this, PostRequirementActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("requirement",mRequirement);
-                intent.putExtra("detail", bundle);
-                startActivity(intent);
-                return true;
-            case R.id.delete:
-                showDeleteDialog();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if(!haveReceiver) {
+            switch (item.getItemId()) {
+                case R.id.write:
+                    Intent intent = new Intent(this, PostRequirementActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("requirement", mRequirement);
+                    intent.putExtra("detail", bundle);
+                    startActivity(intent);
+                    return true;
+                case R.id.delete:
+                    showDeleteDialog();
+                    return true;
+                default:
+                    return super.onOptionsItemSelected(item);
 
+            }
+        }else{
+            Toast.makeText(Detail2Activity.this,"被认领的任务不能修改和删除",Toast.LENGTH_SHORT).show();
+            return super.onOptionsItemSelected(item);
         }
     }
 

@@ -1,6 +1,12 @@
 package halewang.com.bangbang;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -23,7 +29,7 @@ import halewang.com.bangbang.model.User;
 public class NotificationActivity extends AppCompatActivity {
 
     private static final String TAG = "NotificationActivity";
-
+    private static final int REQUEST_CALL_PHONE = 1;
     private Toolbar mToolbar;
     private CircleImageView avatar;
     private TextView phone;
@@ -116,7 +122,29 @@ public class NotificationActivity extends AppCompatActivity {
     }
 
     private void callReceiver(String phoneNum){
-        Toast.makeText(NotificationActivity.this,phoneNum,Toast.LENGTH_SHORT).show();
+        if (ContextCompat.checkSelfPermission(NotificationActivity.this,Manifest.permission.CALL_PHONE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CALL_PHONE},REQUEST_CALL_PHONE);
+        } else{
+            Intent intent = new Intent(Intent.ACTION_CALL);
+            Uri uri = Uri.parse("tel:" + phoneNum);
+            intent.setData(uri);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == REQUEST_CALL_PHONE){
+            if(grantResults[0]==PackageManager.PERMISSION_GRANTED){
+                callReceiver(mRequirement.getReceiverPhone());
+            }else{
+                Toast.makeText(NotificationActivity.this, "拨打电话权限被拒绝", Toast.LENGTH_SHORT).show();
+            }
+            return;
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override

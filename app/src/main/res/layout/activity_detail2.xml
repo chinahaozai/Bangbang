@@ -125,6 +125,28 @@
                 android:textColor="#cfcfcf"
                 android:textSize="12sp"/>
 
+            <TextView
+                android:id="@+id/tv_call"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="联系认领人"
+                android:textColor="#298dff"
+                android:layout_marginTop="10dp"
+                android:visibility="gone"/>
+
+            <Button
+                android:id="@+id/btn_finish"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="60dp"
+                android:layout_gravity="center_horizontal"
+                android:text="结束需求"
+                android:textColor="#fff"
+                android:textSize="18sp"
+                android:background="@drawable/btn_ensure_selector"
+                android:visibility="gone"/>
+
 
         </LinearLayout>
 
