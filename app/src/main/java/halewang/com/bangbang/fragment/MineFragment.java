@@ -31,6 +31,7 @@ public class MineFragment extends BaseFragment<FragmentMineView, MinePresenter> 
     private TextView tvUser;
     private TextView tvPhoneNum;
     private LinearLayout myRequirement;
+    private LinearLayout claimRequirement;
 
     @Override
     public MinePresenter initPresenter() {
@@ -45,6 +46,7 @@ public class MineFragment extends BaseFragment<FragmentMineView, MinePresenter> 
         tvUser = (TextView) mView.findViewById(R.id.tv_user);
         tvPhoneNum = (TextView) mView.findViewById(R.id.tv_phone_num);
         myRequirement = (LinearLayout) mView.findViewById(R.id.my_requirement_item);
+        claimRequirement = (LinearLayout) mView.findViewById(R.id.my_claim_item);
         return mView;
     }
 
@@ -66,6 +68,11 @@ public class MineFragment extends BaseFragment<FragmentMineView, MinePresenter> 
     @Override
     public LinearLayout getMyRequirenment() {
         return myRequirement;
+    }
+
+    @Override
+    public LinearLayout getClaimRequirement() {
+        return claimRequirement;
     }
 
     @Override

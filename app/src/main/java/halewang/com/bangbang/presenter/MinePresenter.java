@@ -12,6 +12,7 @@ import java.util.HashMap;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 import cn.smssdk.gui.RegisterPage;
+import halewang.com.bangbang.ClaimActivity;
 import halewang.com.bangbang.Constant;
 import halewang.com.bangbang.LoginActivity;
 import halewang.com.bangbang.MyRequirementActivity;
@@ -28,6 +29,7 @@ public class MinePresenter extends BasePresenter<FragmentMineView>{
     private RelativeLayout rlUserItem;
     private TextView tvUser;
     private LinearLayout myRequirement;
+    private LinearLayout claimRequirement;
     public MinePresenter(Context mContext){
         this.mContext = mContext;
     }
@@ -43,6 +45,7 @@ public class MinePresenter extends BasePresenter<FragmentMineView>{
         rlUserItem = getMView().getUserItem();
         tvUser = getMView().getTvUser();
         myRequirement = getMView().getMyRequirenment();
+        claimRequirement = getMView().getClaimRequirement();
     }
 
     private void initData(){
@@ -61,6 +64,13 @@ public class MinePresenter extends BasePresenter<FragmentMineView>{
             @Override
             public void onClick(View v) {
                 mContext.startActivity(new Intent(mContext, MyRequirementActivity.class));
+            }
+        });
+
+        claimRequirement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mContext.startActivity(new Intent(mContext, ClaimActivity.class));
             }
         });
 

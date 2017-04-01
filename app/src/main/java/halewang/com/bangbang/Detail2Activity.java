@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +17,10 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
@@ -23,11 +28,13 @@ import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.UpdateListener;
 import de.hdodenhof.circleimageview.CircleImageView;
+import halewang.com.bangbang.model.MessageEvent;
 import halewang.com.bangbang.model.Requirement;
 import halewang.com.bangbang.model.User;
 
 public class Detail2Activity extends AppCompatActivity {
 
+    private static final String TAG = "Detail2Activity";
 
     private Toolbar mToolbar;
     private CircleImageView avatar;
@@ -189,5 +196,10 @@ public class Detail2Activity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

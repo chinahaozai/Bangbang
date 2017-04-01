@@ -130,6 +130,8 @@
         </activity>
         <activity android:name=".NotificationActivity">
         </activity>
+        <activity android:name=".ClaimActivity">
+        </activity>
     </application>
 
 </manifest>

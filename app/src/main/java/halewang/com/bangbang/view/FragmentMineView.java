@@ -27,4 +27,10 @@ public interface FragmentMineView extends BaseView{
      */
     LinearLayout getMyRequirenment();
 
+    /**
+     * 获取认领的任务
+     * @return
+     */
+    LinearLayout getClaimRequirement();
+
 }
