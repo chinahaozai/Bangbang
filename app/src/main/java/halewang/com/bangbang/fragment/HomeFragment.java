@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.youth.banner.Banner;
+
 import halewang.com.bangbang.R;
 import halewang.com.bangbang.presenter.HomePresenter;
 import halewang.com.bangbang.view.FragmentHomeView;
@@ -42,5 +44,10 @@ public class HomeFragment extends BaseFragment<FragmentHomeView,HomePresenter> i
     @Override
     public Button getFindButton() {
         return (Button) mView.findViewById(R.id.btn_find);
+    }
+
+    @Override
+    public Banner getBanner() {
+        return (Banner) mView.findViewById(R.id.banner);
     }
 }

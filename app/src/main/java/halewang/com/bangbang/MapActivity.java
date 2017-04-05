@@ -147,25 +147,6 @@ public class MapActivity extends AppCompatActivity implements RouteSearch.OnRout
                     drivingRouteOverlay.removeFromMap();
                     drivingRouteOverlay.addToMap();
                     drivingRouteOverlay.zoomToSpan();
-                    /*mBottomLayout.setVisibility(View.VISIBLE);
-                    int dis = (int) drivePath.getDistance();
-                    int dur = (int) drivePath.getDuration();
-                    String des = AMapUtil.getFriendlyTime(dur)+"("+AMapUtil.getFriendlyLength(dis)+")";
-                    mRotueTimeDes.setText(des);
-                    mRouteDetailDes.setVisibility(View.VISIBLE);
-                    int taxiCost = (int) mDriveRouteResult.getTaxiCost();
-                    mRouteDetailDes.setText("打车约"+taxiCost+"元");
-                    mBottomLayout.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(mContext,
-                                    DriveRouteDetailActivity.class);
-                            intent.putExtra("drive_path", drivePath);
-                            intent.putExtra("drive_result",
-                                    mDriveRouteResult);
-                            startActivity(intent);
-                        }
-                    });*/
 
                 } else if (result != null && result.getPaths() == null) {
                     ///ToastUtil.show(mContext, R.string.no_result);

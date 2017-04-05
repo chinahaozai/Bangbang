@@ -14,8 +14,6 @@ import android.widget.Toast;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
@@ -68,7 +66,7 @@ public class ClaimActivity extends AppCompatActivity {
                 Requirement requirement = (Requirement)adapter.getItem(position);
                 switch (view.getId()){
                     case R.id.requirement_item:
-                        Intent intent = new Intent(ClaimActivity.this, Detail2Activity.class);
+                        Intent intent = new Intent(ClaimActivity.this, ClaimDetailActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("requirement",requirement);
                         intent.putExtra("detail", bundle);

@@ -1,6 +1,8 @@
 package halewang.com.bangbang.presenter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +13,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemChildClickListener;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -19,6 +24,7 @@ import java.util.regex.Pattern;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
+import halewang.com.bangbang.DetailActivity;
 import halewang.com.bangbang.R;
 import halewang.com.bangbang.adapter.RequirementAdapter;
 import halewang.com.bangbang.model.Requirement;
@@ -61,7 +67,23 @@ public class SearchPresenter extends BasePresenter<SearchRequirementView>{
         mRefreshLayout.setEnabled(false);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-
+        mRecyclerView.addOnItemTouchListener(new OnItemChildClickListener() {
+            @Override
+            public void onSimpleItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                Requirement requirement = (Requirement)adapter.getItem(position);
+                switch (view.getId()){
+                    case R.id.requirement_item:
+                        Intent intent = new Intent(mContext, DetailActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("requirement",requirement);
+                        intent.putExtra("detail", bundle);
+                        mContext.startActivity(intent);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
         tvSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

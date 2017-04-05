@@ -33,5 +33,11 @@ public class RequirementAdapter extends BaseQuickAdapter<Requirement, BaseViewHo
             helper.setVisible(R.id.iv_status,false);
         }
 
+        if(!item.getStatus().equals("zero")){
+            helper.setBackgroundRes(R.id.iv_status,R.drawable.ic_finish);
+        }else{
+            helper.setBackgroundRes(R.id.iv_status,R.drawable.ic_status);
+        }
+
     }
 }
