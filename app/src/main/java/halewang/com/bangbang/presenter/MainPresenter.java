@@ -56,6 +56,7 @@ public class MainPresenter extends BasePresenter<MainView>{
         }else {
             mActivity = (MainActivity) mContext;
             mViewPager = getMView().getViewPager();
+            mViewPager.setOffscreenPageLimit(2);
             mTabLayout = getMView().getTabLayout();
         }
     }

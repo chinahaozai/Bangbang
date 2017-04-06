@@ -8,7 +8,7 @@ import java.util.List;
 
 public class NewsBean {
     private String date;
-    private List<News> stories;
+    private List<News> news;
 
     public String getDate() {
         return date;
@@ -18,19 +18,19 @@ public class NewsBean {
         this.date = date;
     }
 
-    public List<News> getStories() {
-        return stories;
+    public List<News> getNews() {
+        return news;
     }
 
-    public void setStories(List<News> stories) {
-        this.stories = stories;
+    public void setNews(List<News> news) {
+        this.news = news;
     }
 
     @Override
     public String toString() {
         return "NewsBean{" +
                 "date='" + date + '\'' +
-                ", stories=" + stories +
+                ", news=" + news +
                 '}';
     }
 }

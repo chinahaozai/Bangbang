@@ -134,6 +134,8 @@
         </activity>
         <activity android:name=".ClaimDetailActivity">
         </activity>
+        <activity android:name=".NewsContentActivity">
+        </activity>
     </application>
 
 </manifest>

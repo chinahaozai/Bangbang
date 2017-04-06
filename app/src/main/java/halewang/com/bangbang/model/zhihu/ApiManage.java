@@ -30,7 +30,7 @@ public class ApiManage {
     }
 
     private static void createNewsService(){
-        newsService = createRetrofit("http://news-at.zhihu.com/api/3/news/").create(ZhihuNewsService.class);
+        newsService = createRetrofit("http://news.at.zhihu.com/api/1.2/stories/").create(ZhihuNewsService.class);
     }
     private static void createNewsDetailService(){
         newsDetailService = createRetrofit("http://news-at.zhihu.com/api/3/news/").create(NewsDetailService.class);

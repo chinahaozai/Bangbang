@@ -8,8 +8,11 @@ import java.util.List;
 
 public class News {
     private String title;
-    private List<String> images;
+    private String image;
     private String id;
+    private String share_url;
+    private String thumbnail;
+    private String url;
 
     public String getTitle() {
         return title;
@@ -19,12 +22,12 @@ public class News {
         this.title = title;
     }
 
-    public List<String> getImages() {
-        return images;
+    public String getImage() {
+        return image;
     }
 
-    public void setImages(List<String> images) {
-        this.images = images;
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getId() {
@@ -35,12 +38,39 @@ public class News {
         this.id = id;
     }
 
+    public String getShare_url() {
+        return share_url;
+    }
+
+    public void setShare_url(String share_url) {
+        this.share_url = share_url;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     @Override
     public String toString() {
         return "News{" +
                 "title='" + title + '\'' +
-                ", images=" + images +
+                ", image='" + image + '\'' +
                 ", id='" + id + '\'' +
+                ", share_url='" + share_url + '\'' +
+                ", thumbnail='" + thumbnail + '\'' +
+                ", url='" + url + '\'' +
                 '}';
     }
 }
