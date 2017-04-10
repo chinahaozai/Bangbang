@@ -144,8 +144,7 @@
                 android:text="结束需求"
                 android:textColor="#fff"
                 android:textSize="18sp"
-                android:background="@drawable/btn_ensure_selector"
-                android:visibility="gone"/>
+                android:background="@drawable/btn_ensure_selector"/>
 
 
         </LinearLayout>

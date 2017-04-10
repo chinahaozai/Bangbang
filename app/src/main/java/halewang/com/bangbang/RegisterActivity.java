@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
+import halewang.com.bangbang.model.Acount;
 import halewang.com.bangbang.model.User;
 import halewang.com.bangbang.utils.MD5Util;
 
@@ -99,9 +100,23 @@ public class RegisterActivity extends AppCompatActivity {
             public void done(String s, BmobException e) {
                 if(e == null){
                     Toast.makeText(RegisterActivity.this,"注册成功",Toast.LENGTH_SHORT).show();
+                    initAcount();
                     finish();
                 }else{
                     Toast.makeText(RegisterActivity.this,"注册失败,请重试",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void initAcount(){
+        Acount acount = new Acount();
+        acount.setPhone(phoneNum);
+        acount.save(new SaveListener<String>() {
+            @Override
+            public void done(String s, BmobException e) {
+                if(e != null){
+                    Toast.makeText(RegisterActivity.this,"初始化账户失败，请重试",Toast.LENGTH_SHORT).show();
                 }
             }
         });

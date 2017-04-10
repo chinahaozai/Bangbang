@@ -22,13 +22,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import java.util.List;
+
+import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 import de.hdodenhof.circleimageview.CircleImageView;
+import halewang.com.bangbang.model.Acount;
 import halewang.com.bangbang.model.Requirement;
 import halewang.com.bangbang.model.User;
+import halewang.com.bangbang.utils.PrefUtil;
 
 public class Detail2Activity extends AppCompatActivity {
 
@@ -103,8 +108,9 @@ public class Detail2Activity extends AppCompatActivity {
                 }
             });
         }else{
-            call.setVisibility(View.GONE);
-            btnFinish.setVisibility(View.GONE);
+            //call.setVisibility(View.GONE);
+            btnFinish.setEnabled(false);
+            btnFinish.setText("已结束");
         }
         phone.setText(mRequirement.getInitiatorPhone());
         //user.setText(requirement.getInitiatorPhone());
@@ -113,6 +119,67 @@ public class Detail2Activity extends AppCompatActivity {
         content.setText(mRequirement.getContent());
         updateTime.setText(mRequirement.getUpdatedAt());
         initUser(mRequirement.getInitiatorPhone());
+
+        btnFinish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dealRequirementFinish();
+            }
+        });
+    }
+
+    private void dealRequirementFinish(){
+        BmobQuery<Acount> query = new BmobQuery<>();
+        query.addWhereEqualTo("phone",PrefUtil.getString(Detail2Activity.this,Constant.PHONE,null));
+        query.findObjects(new FindListener<Acount>() {
+            @Override
+            public void done(List<Acount> list, BmobException e) {
+                if(e == null){
+                    Acount acount = list.get(0);
+                    int pay = acount.getPay();
+                    acount.setPay(pay+mRequirement.getMoney());
+                    acount.update(new UpdateListener() {
+                        @Override
+                        public void done(BmobException e) {
+
+                        }
+                    });
+                }
+            }
+        });
+
+        BmobQuery<Acount> query1 = new BmobQuery<>();
+        query1.addWhereEqualTo("phone",mRequirement.getReceiverPhone());
+        query1.findObjects(new FindListener<Acount>() {
+            @Override
+            public void done(List<Acount> list, BmobException e) {
+                if(e == null){
+                    Acount acount = list.get(0);
+                    int earning = acount.getEarning();
+                    acount.setEarning(earning+mRequirement.getMoney());
+                    acount.update(new UpdateListener() {
+                        @Override
+                        public void done(BmobException e) {
+
+                        }
+                    });
+                }
+            }
+        });
+
+        mRequirement.setStatus("one");
+        mRequirement.update(new UpdateListener() {
+            @Override
+            public void done(BmobException e) {
+                if(e == null) {
+                    Toast.makeText(Detail2Activity.this, "该需求成功结束", Toast.LENGTH_SHORT).show();
+                    btnFinish.setEnabled(false);
+                    btnFinish.setText("已结束");
+                }else{
+                    Toast.makeText(Detail2Activity.this, "该需求结束失败，请重试", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @Override

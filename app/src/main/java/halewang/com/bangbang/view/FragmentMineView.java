@@ -33,4 +33,10 @@ public interface FragmentMineView extends BaseView{
      */
     LinearLayout getClaimRequirement();
 
+    /**
+     * 获取关于软件
+     * @return
+     */
+    LinearLayout getAboutAPP();
+
 }
