@@ -39,4 +39,10 @@ public interface FragmentMineView extends BaseView{
      */
     LinearLayout getAboutAPP();
 
+    /**
+     * 获取我的账户
+     * @return
+     */
+    LinearLayout getMyAccount();
+
 }

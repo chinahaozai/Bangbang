@@ -9,4 +9,5 @@
     <color name="itemPressed">#ceececec</color>
     <color name="colorTitle">#292929</color>
     <color name="colorContent">#666666</color>
+    <color name="new_black">#747474</color>
 </resources>

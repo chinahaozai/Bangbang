@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="halewang.com.bangbang">
+<manifest package="halewang.com.bangbang"
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- BmobSDK所需的权限 -->
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -137,6 +137,8 @@
         <activity android:name=".NewsContentActivity">
         </activity>
         <activity android:name=".AboutActivity">
+        </activity>
+        <activity android:name=".AccountActivity">
         </activity>
     </application>
 

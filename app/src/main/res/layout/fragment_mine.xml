@@ -103,7 +103,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="8dp">
+            android:padding="8dp"
+            android:background="@drawable/user_info_item_selector">
 
             <ImageView
                 android:layout_width="30dp"
@@ -278,10 +279,6 @@
                 android:background="@drawable/order_detail_arrow_gray"/>
         </LinearLayout>
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="12dp"
-            android:background="#e6e6e6"/>
 
     </LinearLayout>
 

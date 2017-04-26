@@ -81,6 +81,11 @@ public class MineFragment extends BaseFragment<FragmentMineView, MinePresenter> 
     }
 
     @Override
+    public LinearLayout getMyAccount() {
+        return (LinearLayout) mView.findViewById(R.id.my_count_item);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         if (PrefUtil.getBoolean(getActivity(), Constant.IS_ONLINE, false)) {
