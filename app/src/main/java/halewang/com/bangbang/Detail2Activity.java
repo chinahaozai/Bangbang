@@ -20,7 +20,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import cn.bmob.v3.Bmob;
@@ -76,7 +78,7 @@ public class Detail2Activity extends AppCompatActivity {
         });
     }
 
-    private void initView(){
+    private void initView() {
         avatar = (CircleImageView) findViewById(R.id.iv_avatar);
         phone = (TextView) findViewById(R.id.tv_phone_num);
         call = (TextView) findViewById(R.id.tv_call);
@@ -88,10 +90,10 @@ public class Detail2Activity extends AppCompatActivity {
         btnFinish = (Button) findViewById(R.id.btn_finish);
     }
 
-    private void initData(){
+    private void initData() {
         mRequirement = (Requirement) getIntent().getBundleExtra("detail").getSerializable("requirement");
 
-        if(!TextUtils.isEmpty(mRequirement.getReceiverPhone()) && mRequirement.getStatus().equals("zero")){
+        if (!TextUtils.isEmpty(mRequirement.getReceiverPhone()) && mRequirement.getStatus().equals("zero")) {
             haveReceiver = true;
             call.setVisibility(View.VISIBLE);
             call.setOnClickListener(new View.OnClickListener() {
@@ -100,21 +102,24 @@ public class Detail2Activity extends AppCompatActivity {
                     callReceiver(mRequirement.getReceiverPhone());
                 }
             });
-            btnFinish.setVisibility(View.VISIBLE);
-            btnFinish.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
-        }else{
+            if(mRequirement.getReceiverPhone().equals(PrefUtil.getString(Detail2Activity.this,Constant.PHONE,""))){
+                btnFinish.setVisibility(View.GONE);
+            }else{
+                btnFinish.setVisibility(View.VISIBLE);
+            }
+        } else {
             //call.setVisibility(View.GONE);
+            if(TextUtils.isEmpty(mRequirement.getReceiverPhone())){
+                btnFinish.setVisibility(View.GONE);
+            }else{
+                btnFinish.setVisibility(View.VISIBLE);
+            }
             btnFinish.setEnabled(false);
             btnFinish.setText("已结束");
         }
         phone.setText(mRequirement.getInitiatorPhone());
         //user.setText(requirement.getInitiatorPhone());
-        money.setText(mRequirement.getMoney()+"¥");
+        money.setText(mRequirement.getMoney() + "¥");
         title.setText(mRequirement.getTitle());
         content.setText(mRequirement.getContent());
         updateTime.setText(mRequirement.getUpdatedAt());
@@ -128,16 +133,16 @@ public class Detail2Activity extends AppCompatActivity {
         });
     }
 
-    private void dealRequirementFinish(){
+    private void dealRequirementFinish() {
         BmobQuery<Acount> query = new BmobQuery<>();
-        query.addWhereEqualTo("phone",PrefUtil.getString(Detail2Activity.this,Constant.PHONE,null));
+        query.addWhereEqualTo("phone", PrefUtil.getString(Detail2Activity.this, Constant.PHONE, null));
         query.findObjects(new FindListener<Acount>() {
             @Override
             public void done(List<Acount> list, BmobException e) {
-                if(e == null){
+                if (e == null) {
                     Acount acount = list.get(0);
                     int pay = acount.getPay();
-                    acount.setPay(pay+mRequirement.getMoney());
+                    acount.setPay(pay + mRequirement.getMoney());
                     acount.update(new UpdateListener() {
                         @Override
                         public void done(BmobException e) {
@@ -149,14 +154,14 @@ public class Detail2Activity extends AppCompatActivity {
         });
 
         BmobQuery<Acount> query1 = new BmobQuery<>();
-        query1.addWhereEqualTo("phone",mRequirement.getReceiverPhone());
+        query1.addWhereEqualTo("phone", mRequirement.getReceiverPhone());
         query1.findObjects(new FindListener<Acount>() {
             @Override
             public void done(List<Acount> list, BmobException e) {
-                if(e == null){
+                if (e == null) {
                     Acount acount = list.get(0);
                     int earning = acount.getEarning();
-                    acount.setEarning(earning+mRequirement.getMoney());
+                    acount.setEarning(earning + mRequirement.getMoney());
                     acount.update(new UpdateListener() {
                         @Override
                         public void done(BmobException e) {
@@ -171,11 +176,11 @@ public class Detail2Activity extends AppCompatActivity {
         mRequirement.update(new UpdateListener() {
             @Override
             public void done(BmobException e) {
-                if(e == null) {
+                if (e == null) {
                     Toast.makeText(Detail2Activity.this, "该需求成功结束", Toast.LENGTH_SHORT).show();
                     btnFinish.setEnabled(false);
                     btnFinish.setText("已结束");
-                }else{
+                } else {
                     Toast.makeText(Detail2Activity.this, "该需求结束失败，请重试", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -190,7 +195,7 @@ public class Detail2Activity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(!haveReceiver) {
+        if (!haveReceiver) {
             switch (item.getItemId()) {
                 case R.id.write:
                     Intent intent = new Intent(this, PostRequirementActivity.class);
@@ -206,13 +211,13 @@ public class Detail2Activity extends AppCompatActivity {
                     return super.onOptionsItemSelected(item);
 
             }
-        }else{
-            Toast.makeText(Detail2Activity.this,"被认领的任务不能修改和删除",Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(Detail2Activity.this, "被认领的任务不能修改和删除", Toast.LENGTH_SHORT).show();
             return super.onOptionsItemSelected(item);
         }
     }
 
-    private void showDeleteDialog(){
+    private void showDeleteDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         AlertDialog dialog = builder.create();
         dialog.setTitle("确认删除");
@@ -229,11 +234,11 @@ public class Detail2Activity extends AppCompatActivity {
                 mRequirement.delete(new UpdateListener() {
                     @Override
                     public void done(BmobException e) {
-                        if(e == null){
-                            Toast.makeText(Detail2Activity.this,"删除成功",Toast.LENGTH_SHORT).show();
+                        if (e == null) {
+                            Toast.makeText(Detail2Activity.this, "删除成功", Toast.LENGTH_SHORT).show();
                             finish();
-                        }else{
-                            Toast.makeText(Detail2Activity.this,"删除失败，请检查网络",Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(Detail2Activity.this, "删除失败，请检查网络", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -243,22 +248,22 @@ public class Detail2Activity extends AppCompatActivity {
 
     }
 
-    private void initUser(String phoneNum){
+    private void initUser(String phoneNum) {
         String temp = phoneNum.substring(3, 7);
         phone.setText(phoneNum.replace(temp, "****"));
         final BmobQuery<User> user = new BmobQuery<>();
-        user.addWhereEqualTo("phone",phoneNum);
+        user.addWhereEqualTo("phone", phoneNum);
         user.findObjects(new FindListener<User>() {
             @Override
             public void done(List<User> list, BmobException e) {
-                if(list.size() > 0){
+                if (list.size() > 0) {
                     User user1 = list.get(0);
-                    if(user1.getName().isEmpty()){
+                    if (user1.getName().isEmpty()) {
                         tvUser.setVisibility(View.GONE);
-                    }else{
+                    } else {
                         tvUser.setText(user1.getName());
                     }
-                    if(!user1.getAvatar().isEmpty()){
+                    if (!user1.getAvatar().isEmpty()) {
                         Glide.with(Detail2Activity.this)
                                 .load(user1.getAvatar())
                                 .into(avatar);
@@ -273,12 +278,12 @@ public class Detail2Activity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    private void callReceiver(String phoneNum){
+    private void callReceiver(String phoneNum) {
         if (ContextCompat.checkSelfPermission(Detail2Activity.this, Manifest.permission.CALL_PHONE)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.CALL_PHONE},REQUEST_CALL_PHONE);
-        } else{
+                    new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CALL_PHONE);
+        } else {
             Intent intent = new Intent(Intent.ACTION_CALL);
             Uri uri = Uri.parse("tel:" + phoneNum);
             intent.setData(uri);
@@ -288,10 +293,10 @@ public class Detail2Activity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode == REQUEST_CALL_PHONE){
-            if(grantResults[0]==PackageManager.PERMISSION_GRANTED){
+        if (requestCode == REQUEST_CALL_PHONE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 callReceiver(mRequirement.getReceiverPhone());
-            }else{
+            } else {
                 Toast.makeText(Detail2Activity.this, "拨打电话权限被拒绝", Toast.LENGTH_SHORT).show();
             }
             return;

@@ -120,7 +120,7 @@ public class SearchPresenter extends BasePresenter<SearchRequirementView>{
     }
 
     private boolean containsIgnoreCase( String haystack, String needle ){
-        Pattern p = Pattern.compile(needle,Pattern.CASE_INSENSITIVE+Pattern.LITERAL);
+        Pattern p = Pattern.compile(needle,Pattern.CASE_INSENSITIVE+Pattern.LITERAL);   //忽略大小写匹配正则表达式
         Matcher m = p.matcher(haystack);
         return m.find();
     }
